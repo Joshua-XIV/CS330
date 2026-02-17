@@ -198,44 +198,35 @@ void SceneManager::DefineObjectMaterials()
 	/*** There is no limit to the number of object materials that can ***/
 	/*** be defined. Refer to the code in the OpenGL Sample for help  ***/
 
-	// Default material with pink tint
+	// Default material - soft pink tint
 	OBJECT_MATERIAL defaultMat;
-	//defaultMat.ambientColor = glm::vec3(0.8f, 0.2f, 0.2f);  // White
-	//defaultMat.ambientStrength = 0.3f;
-	defaultMat.diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);  // White
-	defaultMat.specularColor = glm::vec3(1.0f, 1.0f, 1.0f); // White
-	defaultMat.shininess = 1.0f;
+	defaultMat.diffuseColor = glm::vec3(1.0f, 0.3f, 0.3f);  // pink
+	defaultMat.specularColor = glm::vec3(0.01f, 0.01f, 0.01f); // low spec
+	defaultMat.shininess = 8.0f;							// low shine
 	defaultMat.tag = "default";
 	m_objectMaterials.push_back(defaultMat);
 
-	// material with high shininess for reflective surfaces
+	// Shiny metal material - light gray with strong reflectivity
 	OBJECT_MATERIAL metalMat;
-	//metalMat.ambientColor = glm::vec3(0.5f, 0.2f, 0.2f);    // red ambient
-	//metalMat.ambientStrength = 0.7f;
-	metalMat.diffuseColor = glm::vec3(0.3f, 0.3f, 0.3f);    // light gray diffuse
-	metalMat.specularColor = glm::vec3(0.8f, 0.8f, 0.8f);   // white specular
-	metalMat.shininess = 32.0f;                            // very shiny
+	metalMat.diffuseColor = glm::vec3(0.9f, 0.3f, 0.3f);     // redish diffuse
+	metalMat.specularColor = glm::vec3(0.9f, 0.1f, 0.1f);    // bright gray specular
+	metalMat.shininess = 128.0f;                             // very shiny
 	metalMat.tag = "shiny";
 	m_objectMaterials.push_back(metalMat);
 
-	// material with medium shininess and slight color tint, will be dimmer than default
-	// trying to resemble a plastic like material
+	// Plastic material - blue/purple tint with moderate shine
 	OBJECT_MATERIAL plasticMat;
-	//plasticMat.ambientColor = glm::vec3(0.3f, 0.3f, 0.3f);  // gray ambient
-	//plasticMat.ambientStrength = 0.3f;
-	plasticMat.diffuseColor = glm::vec3(0.5f, 0.5f, 1.0f);  // blue tint
-	plasticMat.specularColor = glm::vec3(0.8f, 0.8f, 0.9f); // blue-white specular
-	plasticMat.shininess = 32.0f;                           // medium shininess
+	plasticMat.diffuseColor = glm::vec3(0.1f, 0.1f, 1.0f);   // blue/pruple diffuse
+	plasticMat.specularColor = glm::vec3(0.7f, 0.7f, 0.7f);  // neutral gray specular
+	plasticMat.shininess = 32.0f;                            // medium shininess
 	plasticMat.tag = "plastic";
 	m_objectMaterials.push_back(plasticMat);
 
-	// material to resemble wood, low shine
+	// Wood material - reddish-brown with minimal shine
 	OBJECT_MATERIAL woodMat;
-	//woodMat.ambientColor = glm::vec3(0.3f, 0.2f, 0.1f);  // brown ambient
-	//woodMat.ambientStrength = 0.1f;
-	woodMat.diffuseColor = glm::vec3(0.3f, 0.2f, 0.1f);  // brown diffuse
-	woodMat.specularColor = glm::vec3(0.01f, 0.01f, 0.01f); // low specular
-	woodMat.shininess = 4.0f;                           // low shininess
+	woodMat.diffuseColor = glm::vec3(0.55f, 0.27f, 0.07f);  // brown diffuse
+	woodMat.specularColor = glm::vec3(0.05f, 0.03f, 0.01f); // very faint specular
+	woodMat.shininess = 4.0f;                               // low shininess
 	woodMat.tag = "wood";
 	m_objectMaterials.push_back(woodMat);
 }
@@ -252,49 +243,62 @@ void SceneManager::SetupSceneLights()
 	// the 3D scene with custom lighting, if no light sources have
 	// been added then the display window will be black - to use the 
 	// default OpenGL lighting then comment out the following line
-	m_pShaderManager->setBoolValue(g_UseLightingName, true);
 	m_pShaderManager->setBoolValue("bUseLighting", true);
 
 	/*** STUDENTS - add the code BELOW for setting up light sources ***/
 	/*** Up to four light sources can be defined. Refer to the code ***/
 	/*** in the OpenGL Sample for help                              ***/
 
-	// Set up a directional light (like sunlight)
+	// Set up a directional light
 	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
-	m_pShaderManager->setVec3Value("directionalLight.direction", -0.5f, -1.0f, -0.5f);
-	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.2f, 0.1f, 0.1f);
-	m_pShaderManager->setVec3Value("directionalLight.diffuse", 1.0f, 0.6f, 0.6f);
+	m_pShaderManager->setVec3Value("directionalLight.direction", 1.0f, -0.5f, 1.0f);
+	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.05f, 0.05f, 0.05f);
+	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.5f, 0.5f, 0.5f);
 	m_pShaderManager->setVec3Value("directionalLight.specular", 0.5f, 0.5f, 0.5f);
 
-	// Set up point lights (like light bulbs)
-	// Light 0 - front right
+	// Set up point lights
+	// Light 0 - front right, pink tint
 	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[0].position", 5.0f, 8.0f, 8.0f);
-	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.1f, 0.05f, 0.05f);
-	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 3.0f, 2.0f, 0.6f);
-	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
+	m_pShaderManager->setFloatValue("pointLights[0].constant", 0.5f);
+	m_pShaderManager->setFloatValue("pointLights[0].linear", 0.09f);
+	m_pShaderManager->setFloatValue("pointLights[0].quadratic", 0.032f);
+	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.6f, 0.3f, 0.3f);
+	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 0.7f, 0.2f, 0.3f);
+	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.8f, 0.2f, 0.6f);
 
-	// Light 1 - front left
+	// Light 1 - front left, blue/purple ish glow
 	m_pShaderManager->setBoolValue("pointLights[1].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[1].position", -4.0f, 6.0f, 7.0f);
-	m_pShaderManager->setVec3Value("pointLights[1].ambient", 0.1f, 0.05f, 0.05f);
-	m_pShaderManager->setVec3Value("pointLights[1].diffuse", 0.9f, 0.9f, 0.9f);
-	m_pShaderManager->setVec3Value("pointLights[1].specular", 0.3f, 0.3f, 0.3f);
+	m_pShaderManager->setFloatValue("pointLights[1].constant", 1.0f);
+	m_pShaderManager->setFloatValue("pointLights[1].linear", 0.09f);
+	m_pShaderManager->setFloatValue("pointLights[1].quadratic", 0.032f);
+	m_pShaderManager->setVec3Value("pointLights[1].ambient", 0.1f, 0.1f, 0.9f);
+	m_pShaderManager->setVec3Value("pointLights[1].diffuse", 0.2f, 0.1f, 0.5f);
+	m_pShaderManager->setVec3Value("pointLights[1].specular", 0.3f, 0.1f, 0.8f);
 
 	// Light 2 - back
 	m_pShaderManager->setBoolValue("pointLights[2].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[2].position", 0.0f, 5.0f, -5.0f);
+	m_pShaderManager->setFloatValue("pointLights[2].constant", 1.0f);
+	m_pShaderManager->setFloatValue("pointLights[2].linear", 0.09f);
+	m_pShaderManager->setFloatValue("pointLights[2].quadratic", 0.032f);
 	m_pShaderManager->setVec3Value("pointLights[2].ambient", 0.05f, 0.05f, 0.1f);
-	m_pShaderManager->setVec3Value("pointLights[2].diffuse", 0.6f, 0.45f, 1.2f);
+	m_pShaderManager->setVec3Value("pointLights[2].diffuse", 0.1f, 0.1f, 0.1f);
 	m_pShaderManager->setVec3Value("pointLights[2].specular", 0.2f, 0.2f, 0.4f);
 
-	// Deactivate remaining point lights
-	for (int i = 3; i < 5; i++) {
-		m_pShaderManager->setBoolValue(("pointLights[" + std::to_string(i) + "].bActive").c_str(), false);
-	}
-
-	// Deactivate spot light for now
-	m_pShaderManager->setBoolValue("spotLight.bActive", false);
+	// Spotlight in the middle of the scene
+	m_pShaderManager->setBoolValue("spotLight.bActive", true);
+	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 10.0f, 1.5f);    // directly above scene center
+	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, -0.05f);   // mostly down, slight forward tilt
+	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(22.0f)));    // inner cone
+	m_pShaderManager->setFloatValue("spotLight.outerCutOff", glm::cos(glm::radians(40.0f))); // soft falloff edge
+	m_pShaderManager->setFloatValue("spotLight.constant", 0.1f);
+	m_pShaderManager->setFloatValue("spotLight.linear", 0.045f);
+	m_pShaderManager->setFloatValue("spotLight.quadratic", 0.0075f);
+	m_pShaderManager->setVec3Value("spotLight.ambient", 0.3f, 0.3f, 0.3f); // greyish ambient
+	m_pShaderManager->setVec3Value("spotLight.diffuse", 0.5f, 0.5f, 0.5f);
+	m_pShaderManager->setVec3Value("spotLight.specular", 0.5f, 0.5f, 0.5f);
 
 }
 
@@ -396,12 +400,17 @@ void SceneManager::RenderScene()
 		positionXYZ);
 
 	// set the active color values in the shader (RGBA)
-	//SetShaderColor(1, 1, 1, 1);
+	SetShaderColor(0.4f, 0.2f, 0.08f, 1.0f);
 
 	// set shader to wood material
 	SetShaderMaterial("wood");
 
+	// draw cylinder mesh
 	m_basicMeshes->DrawCylinderMesh();
+
+	// reset the color back to white
+	SetShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	/****************************************************************/
 
 	/*** Set needed transformations before drawing the basic mesh.  ***/
@@ -428,12 +437,17 @@ void SceneManager::RenderScene()
 		positionXYZ);
 
 	// set the active color values in the shader (RGBA)
-	//SetShaderColor(1, 1, 1, 1);
+	SetShaderColor(0.4f, 0.2f, 0.08f, 1.0f);
 
 	// set shader to wood material
 	SetShaderMaterial("wood");
-
+	
+	// draw box mesh
 	m_basicMeshes->DrawBoxMesh();
+
+	// rest the color back to white
+	SetShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	/****************************************************************/
 
 	/*** Set needed transformations before drawing the basic mesh.  ***/
@@ -465,7 +479,9 @@ void SceneManager::RenderScene()
 	// set shader to shiny material
 	SetShaderMaterial("shiny");
 
+	// draw box mesh
 	m_basicMeshes->DrawBoxMesh();
+
 	/****************************************************************/
 
 	/*** Set needed transformations before drawing the basic mesh.  ***/
@@ -497,7 +513,9 @@ void SceneManager::RenderScene()
 	// set shader to shiny material
 	SetShaderMaterial("shiny");
 
+	// draw sphere mesh
 	m_basicMeshes->DrawSphereMesh();
+
 	/****************************************************************/
 
 	/*** Set needed transformations before drawing the basic mesh.  ***/
@@ -529,6 +547,7 @@ void SceneManager::RenderScene()
 	// set shader to plastic material
 	SetShaderMaterial("plastic");
 
+	// draw cone mesh
 	m_basicMeshes->DrawConeMesh();
 	/****************************************************************/
 }
