@@ -147,6 +147,24 @@ void ViewManager::Mouse_Position_Callback(GLFWwindow* window, double xMousePos, 
 }
 
 /***********************************************************
+ *  Mouse_Scroll_Callback()
+ *
+ *  This method is automatically called from GLFW whenever
+ *  the mouse scroll wheel is used within the active GLFW
+ *  display window. It adjusts the camera movement speed.
+ ***********************************************************/
+void ViewManager::Mouse_Scroll_Callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	// adjust the camera movement speed based on scroll wheel input
+	// positive yOffset = scroll up = decrease speed
+	// negative yOffset = scroll down = increase speed
+	if (NULL != g_pCamera)
+	{
+		g_pCamera->ProcessMouseScroll(yOffset);
+	}
+}
+
+/***********************************************************
  *  ProcessKeyboardEvents()
  *
  *  This method is called to process any keyboard events
@@ -184,6 +202,16 @@ void ViewManager::ProcessKeyboardEvents()
 	if (glfwGetKey(m_pWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
+	}
+
+	// process camera movement up and down
+	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
 	}
 }
 

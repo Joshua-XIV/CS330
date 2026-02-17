@@ -128,7 +128,7 @@ void SceneManager::SetShaderColor(
  *  PrepareScene()
  *
  *  This method is used for preparing the 3D scene by loading
- *  the shapes, textures in memory to support the 3D scene 
+ *  the shapes, textures in memory to support the 3D scene
  *  rendering
  ***********************************************************/
 void SceneManager::PrepareScene()
@@ -151,7 +151,7 @@ void SceneManager::PrepareScene()
 /***********************************************************
  *  RenderScene()
  *
- *  This method is used for rendering the 3D scene by 
+ *  This method is used for rendering the 3D scene by
  *  transforming and drawing the basic 3D shapes
  ***********************************************************/
 void SceneManager::RenderScene()
