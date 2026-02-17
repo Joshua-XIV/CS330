@@ -253,43 +253,48 @@ void SceneManager::SetupSceneLights()
 	// been added then the display window will be black - to use the 
 	// default OpenGL lighting then comment out the following line
 	m_pShaderManager->setBoolValue(g_UseLightingName, true);
+	m_pShaderManager->setBoolValue("bUseLighting", true);
 
 	/*** STUDENTS - add the code BELOW for setting up light sources ***/
 	/*** Up to four light sources can be defined. Refer to the code ***/
 	/*** in the OpenGL Sample for help                              ***/
 
-	// Light 0 - pink from front right
-	m_pShaderManager->setVec3Value("lightSources[0].position", 5.0f, 8.0f, 8.0f);
-	m_pShaderManager->setVec3Value("lightSources[0].ambientColor", 0.2f, 0.1f, 0.1f);
-	m_pShaderManager->setVec3Value("lightSources[0].diffuseColor", 3.0f, 2.0f, 0.6f);
-	m_pShaderManager->setVec3Value("lightSources[0].specularColor", 0.9f, 0.9f, 0.9f);
-	m_pShaderManager->setFloatValue("lightSources[0].focalStrength", 32.0f);
-	m_pShaderManager->setFloatValue("lightSources[0].specularIntensity", 0.5f);
+	// Set up a directional light (like sunlight)
+	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
+	m_pShaderManager->setVec3Value("directionalLight.direction", -0.5f, -1.0f, -0.5f);
+	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.2f, 0.1f, 0.1f);
+	m_pShaderManager->setVec3Value("directionalLight.diffuse", 1.0f, 0.6f, 0.6f);
+	m_pShaderManager->setVec3Value("directionalLight.specular", 0.5f, 0.5f, 0.5f);
 
-	// Light 1 - softer pink, from front-left
-	m_pShaderManager->setVec3Value("lightSources[1].position", -4.0f, 6.0f, 7.0f);
-	m_pShaderManager->setVec3Value("lightSources[1].ambientColor", 0.15f, 0.1f, 0.1f);
-	m_pShaderManager->setVec3Value("lightSources[1].diffuseColor", 0.9f, 0.9f, 0.9f);
-	m_pShaderManager->setVec3Value("lightSources[1].specularColor", 0.5f, 0.4f, 0.4f);
-	m_pShaderManager->setFloatValue("lightSources[1].focalStrength", 32.0f);
-	m_pShaderManager->setFloatValue("lightSources[1].specularIntensity", 0.3f);
+	// Set up point lights (like light bulbs)
+	// Light 0 - front right
+	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
+	m_pShaderManager->setVec3Value("pointLights[0].position", 5.0f, 8.0f, 8.0f);
+	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.1f, 0.05f, 0.05f);
+	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 3.0f, 2.0f, 0.6f);
+	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
 
-	// Light 2 - back grey light
-	m_pShaderManager->setVec3Value("lightSources[2].position", 0.0f, 5.0f, -5.0f);
-	m_pShaderManager->setVec3Value("lightSources[2].ambientColor", 0.1f, 0.1f, 0.2f);
-	m_pShaderManager->setVec3Value("lightSources[2].diffuseColor", 0.6f, 0.45f, 1.2f);
-	m_pShaderManager->setVec3Value("lightSources[2].specularColor", 0.3f, 0.2f, 0.5f);
-	m_pShaderManager->setFloatValue("lightSources[2].focalStrength", 32.0f);
-	m_pShaderManager->setFloatValue("lightSources[2].specularIntensity", 0.4f);
+	// Light 1 - front left
+	m_pShaderManager->setBoolValue("pointLights[1].bActive", true);
+	m_pShaderManager->setVec3Value("pointLights[1].position", -4.0f, 6.0f, 7.0f);
+	m_pShaderManager->setVec3Value("pointLights[1].ambient", 0.1f, 0.05f, 0.05f);
+	m_pShaderManager->setVec3Value("pointLights[1].diffuse", 0.9f, 0.9f, 0.9f);
+	m_pShaderManager->setVec3Value("pointLights[1].specular", 0.3f, 0.3f, 0.3f);
 
+	// Light 2 - back
+	m_pShaderManager->setBoolValue("pointLights[2].bActive", true);
+	m_pShaderManager->setVec3Value("pointLights[2].position", 0.0f, 5.0f, -5.0f);
+	m_pShaderManager->setVec3Value("pointLights[2].ambient", 0.05f, 0.05f, 0.1f);
+	m_pShaderManager->setVec3Value("pointLights[2].diffuse", 0.6f, 0.45f, 1.2f);
+	m_pShaderManager->setVec3Value("pointLights[2].specular", 0.2f, 0.2f, 0.4f);
 
-	// Light 3 - top down neutral light to make sure everything has some light
-	m_pShaderManager->setVec3Value("lightSources[3].position", 0.0f, 12.0f, 2.0f);
-	m_pShaderManager->setVec3Value("lightSources[3].ambientColor", 0.1f, 0.1f, 0.15f);
-	m_pShaderManager->setVec3Value("lightSources[3].diffuseColor", 0.9f, 0.6f, 0.9f);
-	m_pShaderManager->setVec3Value("lightSources[3].specularColor", 0.1f, 0.1f, 0.1f);
-	m_pShaderManager->setFloatValue("lightSources[3].focalStrength", 32.0f);
-	m_pShaderManager->setFloatValue("lightSources[3].specularIntensity", 0.2f);
+	// Deactivate remaining point lights
+	for (int i = 3; i < 5; i++) {
+		m_pShaderManager->setBoolValue(("pointLights[" + std::to_string(i) + "].bActive").c_str(), false);
+	}
+
+	// Deactivate spot light for now
+	m_pShaderManager->setBoolValue("spotLight.bActive", false);
 
 }
 
