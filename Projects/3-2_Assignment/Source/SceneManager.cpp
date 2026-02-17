@@ -128,7 +128,7 @@ void SceneManager::SetShaderColor(
  *  PrepareScene()
  *
  *  This method is used for preparing the 3D scene by loading
- *  the shapes, textures in memory to support the 3D scene 
+ *  the shapes, textures in memory to support the 3D scene
  *  rendering
  ***********************************************************/
 void SceneManager::PrepareScene()
@@ -138,12 +138,16 @@ void SceneManager::PrepareScene()
 	// in the rendered 3D scene
 
 	m_basicMeshes->LoadPlaneMesh();
+	m_basicMeshes->LoadCylinderMesh();
+	m_basicMeshes->LoadSphereMesh();
+	m_basicMeshes->LoadBoxMesh();
+	m_basicMeshes->LoadConeMesh();
 }
 
 /***********************************************************
  *  RenderScene()
  *
- *  This method is used for rendering the 3D scene by 
+ *  This method is used for rendering the 3D scene by
  *  transforming and drawing the basic 3D shapes
  ***********************************************************/
 void SceneManager::RenderScene()
@@ -159,58 +163,171 @@ void SceneManager::RenderScene()
 	/*** This same ordering of code should be used for transforming ***/
 	/*** and drawing all the basic 3D shapes.						***/
 	/******************************************************************/
-	// set the XYZ scale for the mesh
+	/*** FLOOR PLANE                                                ***/
+	/******************************************************************/
+	// Set the XYZ scale for the floor - wide and flat
 	scaleXYZ = glm::vec3(20.0f, 1.0f, 10.0f);
 
-	// set the XYZ rotation for the mesh
+	// No rotation needed for the floor
 	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
-	// set the XYZ position for the mesh
+	// Position at origin (ground level)
 	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	// set the transformations into memory to be used on the drawn meshes
-	SetTransformations(
-		scaleXYZ,
-		XrotationDegrees,
-		YrotationDegrees,
-		ZrotationDegrees,
-		positionXYZ);
-	// set the color values into the shader
-	SetShaderColor(1, 1, 1, 1);
+	// Apply transformations and set dark blue color for floor
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.4f, 0.5f, 0.8f, 1.0f);
 
-	// draw the mesh with transformation values
+	// Draw the floor plane
 	m_basicMeshes->DrawPlaneMesh();
-	/****************************************************************/
 
-	/*** Set needed transformations before drawing the basic mesh.  ***/
-	/*** This same ordering of code should be used for transforming ***/
-	/*** and drawing all the basic 3D shapes.						***/
 	/******************************************************************/
-	// set the XYZ scale for the mesh
+	/*** BACKGROUND WALL PLANE                                      ***/
+	/******************************************************************/
+	// Set the XYZ scale for the background wall
 	scaleXYZ = glm::vec3(20.0f, 1.0f, 10.0f);
 
-	// set the XYZ rotation for the mesh
+	// Rotate 90 degrees on X-axis to make vertical wall
 	XrotationDegrees = 90.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
-	// set the XYZ position for the mesh
+	// Position wall behind the scene
 	positionXYZ = glm::vec3(0.0f, 9.0f, -10.0f);
 
-	// set the transformations into memory to be used on the drawn meshes
-	SetTransformations(
-		scaleXYZ,
-		XrotationDegrees,
-		YrotationDegrees,
-		ZrotationDegrees,
-		positionXYZ);
+	// Apply transformations and set lighter blue color for wall
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.5f, 0.6f, 0.9f, 1.0f);
 
-	// set the color values into the shader
-	SetShaderColor(1, 1, 1, 1);
-
-	// draw the mesh with transformation values
+	// Draw the background wall plane
 	m_basicMeshes->DrawPlaneMesh();
+
+	/******************************************************************/
+	/*** LEFT PEDESTAL - Cylinder supporting purple sphere          ***/
+	/******************************************************************/
+	// Scale cylinder to be shorter
+	scaleXYZ = glm::vec3(1.0f, 0.65f, 1.0f);
+
+	// No rotation needed
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position on the left side of the scene
+	positionXYZ = glm::vec3(-2.0f, 0.0f, 0.0f);
+
+	// Apply transformations and set light blue color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.6f, 0.7f, 1.00f, 1.0f);
+
+	// Draw the left cylinder pedestal
+	m_basicMeshes->DrawCylinderMesh();
+
+	/******************************************************************/
+	/*** PURPLE SPHERE - Sits on top of left cylinder               ***/
+	/******************************************************************/
+	// Scale sphere to medium size
+	scaleXYZ = glm::vec3(0.65f, 0.65f, 0.65f);
+
+	// No rotation needed for sphere
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position above left cylinder
+	positionXYZ = glm::vec3(-2.0f, 1.3f, 0.0f);
+
+	// Apply transformations and set pink-purple color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.75f, 0.55f, 0.85f, 1.0f);
+
+	// Draw the purple sphere
+	m_basicMeshes->DrawSphereMesh();
+
+	/******************************************************************/
+	/*** CENTER PEDESTAL - Tall cylinder supporting yellow cone     ***/
+	/******************************************************************/
+	// Scale cylinder to be taller for center pedestal
+	scaleXYZ = glm::vec3(1.0f, 2.0f, 1.0f);
+
+	// No rotation needed
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position at center of scene
+	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	// Apply transformations and set light blue color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.6f, 0.7f, 1.00f, 1.0f);
+
+	// Draw the center cylinder pedestal
+	m_basicMeshes->DrawCylinderMesh();
+
+	/******************************************************************/
+	/*** YELLOW CONE - Sits on top of center cylinder               ***/
+	/******************************************************************/
+	// Scale cone to be tall and narrow
+	scaleXYZ = glm::vec3(0.7f, 2.0f, 0.7f);
+
+	// No rotation needed (cone points up by default)
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position above center cylinder
+	positionXYZ = glm::vec3(0.0f, 2.01f, 0.0f);
+
+	// Apply transformations and set bright yellow color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(1.0f, 1.0f, 0.1f, 1.0f);
+
+	// Draw the yellow cone
+	m_basicMeshes->DrawConeMesh();
+
+	/******************************************************************/
+	/*** RIGHT PEDESTAL - Medium cylinder supporting red box        ***/
+	/******************************************************************/
+	// Scale cylinder to medium height
+	scaleXYZ = glm::vec3(1.0f, 1.4f, 1.0f);
+
+	// No rotation needed
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position on the right side of the scene
+	positionXYZ = glm::vec3(2.0f, 0.0f, 0.0f);
+
+	// Apply transformations and set light blue color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.6f, 0.7f, 1.00f, 1.0f);
+
+	// Draw the right cylinder pedestal
+	m_basicMeshes->DrawCylinderMesh();
+
+	/******************************************************************/
+	/*** RED BOX - Sits on top of right cylinder                    ***/
+	/******************************************************************/
+	// Scale box to medium size
+	scaleXYZ = glm::vec3(1.2f, 1.2f, 1.2f);
+
+	// Rotate 30 degrees on Y-axis to angle the box
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 30.0f;
+	ZrotationDegrees = 0.0f;
+
+	// Position above right cylinder
+	positionXYZ = glm::vec3(2.0f, 1.9f, 0.0f);
+
+	// Apply transformations and set coral/salmon color
+	SetTransformations(scaleXYZ, XrotationDegrees, YrotationDegrees, ZrotationDegrees, positionXYZ);
+	SetShaderColor(0.95f, 0.5f, 0.45f, 1.0f);
+
+	// Draw the coral-colored box
+	m_basicMeshes->DrawBoxMesh();
 	/****************************************************************/
 }
