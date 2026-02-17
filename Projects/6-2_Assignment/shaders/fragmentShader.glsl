@@ -77,7 +77,13 @@ void main()
         vec3 phongResult = vec3(0.0f);
         vec3 norm = normalize(fragmentVertexNormal);
         vec3 viewDir = normalize(viewPosition - fragmentPosition);
-    
+        
+        // == =====================================================
+        // Our lighting is set up in 3 phases: directional, point lights and an optional flashlight
+        // For each phase, a calculate function is defined that calculates the corresponding color
+        // per light source. In the main() function we take all the calculated colors and sum them 
+        // up for this fragment's final color.
+        // == =====================================================
         // phase 1: directional lighting
         if(directionalLight.bActive == true)
         {
