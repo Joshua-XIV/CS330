@@ -33,7 +33,7 @@ namespace
 	bool gFirstMouse = true;
 
 	// time between current frame and last frame
-	float gDeltaTime = 0.0f; 
+	float gDeltaTime = 0.0f;
 	float gLastFrame = 0.0f;
 
 	// the following variable is false when orthographic projection
@@ -185,13 +185,86 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
 	}
+
+	// process camera movement up and down
+	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
+	}
+
+	// process camera looking left and right
+	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(-50.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(50.0f, 0.0f);
+	}
+
+	// process camera looking up and down
+	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(0.0f, 50.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
+	}
+
+	// change between different projection views
+	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a front orthographic view
+		g_pCamera->Position = glm::vec3(0.0f, 4.0f, 10.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a side orthographic view
+		g_pCamera->Position = glm::vec3(10.0f, 4.0f, 0.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(-1.0f, 0.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a top orthographic view
+		g_pCamera->Position = glm::vec3(0.0f, 7.0f, 0.0f);
+		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
+	{
+		// change to perspective projection
+		bOrthographicProjection = false;
+
+		// change the camera settings to show a perspective view
+		g_pCamera->Position = glm::vec3(0.0f, 5.5f, 8.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -0.5f, -2.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Zoom = 80;
+	}
 }
 
 /***********************************************************
  *  PrepareSceneView()
  *
  *  This method is used for preparing the 3D scene by loading
- *  the shapes, textures in memory to support the 3D scene 
+ *  the shapes, textures in memory to support the 3D scene
  *  rendering
  ***********************************************************/
 void ViewManager::PrepareSceneView()

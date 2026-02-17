@@ -335,9 +335,36 @@ void SceneManager::LoadSceneTextures()
 	/*** 16 textures can be loaded per scene. Refer to the code in   ***/
 	/*** the OpenGL Sample for help.                                 ***/
 
+	// Load brick texture for cone
+	bool bSuccess = CreateGLTexture(
+		"textures/redbrick.jpg",
+		"brick");
 
-	
-	
+	// Load dark wood texture for long box
+	bSuccess = CreateGLTexture(
+		"textures/darkwood.jpg",
+		"wood");
+
+	// Load cinderblock texture for small box
+	bSuccess = CreateGLTexture(
+		"textures/greybrick.jpg",
+		"greybrick");
+
+	// Load granite floor texture for plane
+	bSuccess = CreateGLTexture(
+		"textures/granitefloor.jpg",
+		"granite");
+
+	// Load lava texture for sphere
+	bSuccess = CreateGLTexture(
+		"textures/lava.jpg",
+		"lava");
+
+	// Load natural texture for cylinder
+	bSuccess = CreateGLTexture(
+		"textures/snow.jpg",
+		"natural");
+
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
 	// are a total of 16 available slots for scene textures
@@ -409,8 +436,12 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(1, 1, 1, 1);
+	// apply the granite texture to the plane
+	SetShaderTexture("granite");
+
+	// tighten the pattern to make it look more natural
+	SetTextureUVScale(1.5f, 1.5f);
+
 	// draw the mesh with transformation values - this plane is used for the base
 	m_basicMeshes->DrawPlaneMesh();
 	/****************************************************************/
@@ -438,8 +469,12 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(1, 0, 0, 1);
+	// apply the natural snow texture to the cylinder
+	SetShaderTexture("natural");
+
+	// tighten the pattern on the x to make it look more natural
+	SetTextureUVScale(2.0f, 1.0f);
+
 	// draw the filled cylinder shape
 	m_basicMeshes->DrawCylinderMesh();
 	/****************************************************************/
@@ -467,8 +502,9 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(0, 0, 1, 1);
+	// apply the wood texture to the long box
+	SetShaderTexture("wood");
+
 	// draw the filled box shape
 	m_basicMeshes->DrawBoxMesh();
 	/****************************************************************/
@@ -496,8 +532,9 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(1, 0, 1, 1);
+	// apply the greybrick texture to the small cube
+	SetShaderTexture("greybrick");
+
 	// draw the filled box shape
 	m_basicMeshes->DrawBoxMesh();
 	/****************************************************************/
@@ -525,8 +562,9 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(1, 1, 0, 1);
+	// apply the lava texture to the sphere
+	SetShaderTexture("lava");
+
 	// draw the filled sphere shape
 	m_basicMeshes->DrawSphereMesh();
 	/****************************************************************/
@@ -554,8 +592,11 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	// set the color for the next draw command
-	SetShaderColor(0, 1, 0, 1);
+	// apply brick texture to the cone
+	SetShaderTexture("brick");
+	// make tighter brick pattern
+	SetTextureUVScale(2.0f, 1.0f);
+
 	// draw the filled cone shape
 	m_basicMeshes->DrawConeMesh();
 	/****************************************************************/
