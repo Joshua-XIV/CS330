@@ -456,6 +456,11 @@ void SceneManager::RenderScene()
 	RenderPlaceMat(glm::vec3(3.7f, 5.24f, 0.7f), 1.9f);
 }
 
+/***********************************************************
+ *  RenderFloor()
+ *
+ *  Renders the floor plane with a dark wood texture.
+ ***********************************************************/
 void SceneManager::RenderFloor()
 {
 	glm::vec3 scaleXYZ;
@@ -485,6 +490,12 @@ void SceneManager::RenderFloor()
 	m_basicMeshes->DrawPlaneMesh();
 }
 
+/***********************************************************
+ *  RenderCarpet()
+ *
+ *  Renders a large cylinder to represent a carpet or rug
+ *  sitting on top of the floor.
+ ***********************************************************/
 void SceneManager::RenderCarpet()
 {
 	glm::vec3 scaleXYZ;
@@ -514,6 +525,19 @@ void SceneManager::RenderCarpet()
 	m_basicMeshes->DrawCylinderMesh();
 }
 
+/***********************************************************
+ *  RenderPlaceMat()
+ *
+ *  Renders a circular place mat at the given position.
+ *  Multiple place mats can be rendered by calling this
+ *  method with different positions and scales.
+ *
+ *  position   - world space position of the place mat
+ *  scale      - uniform scale applied to the place mat
+ *  xRotation  - rotation in degrees around the X axis
+ *  yRotation  - rotation in degrees around the Y axis
+ *  zRotation  - rotation in degrees around the Z axis
+ ***********************************************************/
 void SceneManager::RenderPlaceMat(glm::vec3 position, float scale,
 	float xRotation, float yRotation, float zRotation)
 {

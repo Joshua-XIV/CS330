@@ -1,8 +1,23 @@
 #include "Table.h"
 #include <glm/gtx/transform.hpp>
 
+/***********************************************************
+ *  Table()
+ *
+ *  Constructor - passes shader manager and meshes up to
+ *  the SceneObject base class.
+ ***********************************************************/
 Table::Table(ShaderManager* shaderManager, ShapeMeshes* basicMeshes) : SceneObject(shaderManager, basicMeshes) {}
 
+/***********************************************************
+ *  Render()
+ *
+ *  Draws all parts of the table all relative to the given position.
+ *
+ *  Multiple parts are offset from a given position to create the
+ *  entire object as one unit. This also means rotations were applied
+ *  and rotated from that relative position.
+ ***********************************************************/
 void Table::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
 	glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
