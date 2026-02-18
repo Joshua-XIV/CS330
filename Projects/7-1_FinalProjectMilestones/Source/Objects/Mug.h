@@ -5,7 +5,7 @@
  *  Mug
  *
  *  This class handles the rendering of a 3D mug object
- *  composed of an outer body, inner wall, and handle.
+ *  composed of multiple meshes (mainly cylinders and one torus).
  *  All parts are rendered relative to the given position
  *  so the entire mug moves and rotates as one unit.
  ***********************************************************/
@@ -15,7 +15,7 @@ public:
     Mug(ShaderManager* shaderManager, ShapeMeshes* meshes);
 
     // Draws the mug at the given world position.
-    // All parts (body, inner wall, handle) are positioned relative to the given position.
+    // All parts are positioned relative to the given position.
     //
     // position   - world space position of the mug base
     // scale      - scale applied to all parts

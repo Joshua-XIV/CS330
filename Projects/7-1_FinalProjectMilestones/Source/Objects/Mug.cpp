@@ -12,12 +12,11 @@ Mug::Mug(ShaderManager* shaderManager, ShapeMeshes* meshes) : SceneObject(shader
 /***********************************************************
  *  Render()
  *
- *  Draws the three parts of the mug - outer body, inner
- *  wall, and handle - all relative to the given position.
+ *  Draws all parts of the mug all relative to the given position.
  *
- *  The handle offset is transformed by the mug's rotation
- *  matrix so it stays attached to the correct side
- *  regardless of how the mug is rotated.
+ *  Multiple parts are offset from a given position to create the
+ *  entire object as one unit. This also means rotations were applied
+ *  and rotated from that relative position.
  ***********************************************************/
 void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     // build rotation matrix for transforming offsets and the handle
