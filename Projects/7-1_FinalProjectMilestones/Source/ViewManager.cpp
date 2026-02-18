@@ -179,6 +179,12 @@ void ViewManager::Mouse_Scroll_Callback(GLFWwindow* window, double xOffset, doub
  ***********************************************************/
 void ViewManager::ProcessKeyboardEvents()
 {
+	// static variables for view cycling
+	static bool pWasPressed = false;
+	static bool oWasPressed = false;
+	static int perspIndex = 0;
+	static int orthoIndex = 0;
+
 	// close the window if the escape key has been pressed
 	if (glfwGetKey(m_pWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -241,67 +247,126 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
 	}
 
-	// change between different projection views
+	// helper lambda for setting camera view
+	auto SetCameraView = [](glm::vec3 position, glm::vec3 front, glm::vec3 up) {
+		g_pCamera->Position = position;
+		g_pCamera->Front = front;
+		g_pCamera->Up = up;
+		glm::vec3 f = glm::normalize(front);
+		g_pCamera->Pitch = glm::degrees(asin(f.y));
+		g_pCamera->Yaw = glm::degrees(atan2(f.z, f.x));
+	};
+
+	// 1 - front orthographic view
 	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a front orthographic view
-		g_pCamera->Position = glm::vec3(0.0f, 7.0f, 10.0f);
-		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
+		SetCameraView(glm::vec3(0.0f, 7.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
+	// 2 - left side orthographic view
 	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a side orthographic view
-		g_pCamera->Position = glm::vec3(10.0f, 7.0f, 0.0f);
-		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		g_pCamera->Front = glm::vec3(-1.0f, 0.0f, 0.0f);
+		SetCameraView(glm::vec3(-10.0f, 7.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
+	// 3 - back orthographic view
 	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a top orthographic view
-		g_pCamera->Position = glm::vec3(0.0f, 15.0f, 0.0f);
-		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
-		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
+		SetCameraView(glm::vec3(0.0f, 7.0f, -10.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
+	// 4 - right side orthographic view
 	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
 	{
-		// change to perspective projection
-		bOrthographicProjection = false;
-
-		// change the camera settings to show a perspective view
-		g_pCamera->Position = glm::vec3(0.0f, 8.5f, 8.0f);
-		g_pCamera->Front = glm::vec3(0.0f, -1.0f, -2.0f);
-		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		g_pCamera->Zoom = 80;
+		bOrthographicProjection = true;
+		SetCameraView(glm::vec3(10.0f, 7.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-
-	// P key - perspective projection
-	if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		bOrthographicProjection = false;
-
-		g_pCamera->Position = glm::vec3(0.0f, 8.5f, 8.0f);
-		g_pCamera->Front = glm::vec3(0.0f, -1.0f, -2.0f);
-		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		g_pCamera->Zoom = 80;
-	}
-	// O key - orthographic projection
-	if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_PRESS)
+	// 5 - top orthographic view
+	if (glfwGetKey(m_pWindow, GLFW_KEY_5) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
+		SetCameraView(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+	}
+	// 6 - perspective view
+	if (glfwGetKey(m_pWindow, GLFW_KEY_6) == GLFW_PRESS)
+	{
+		bOrthographicProjection = false;
+		SetCameraView(glm::vec3(0.0f, 8.5f, 8.0f), glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		g_pCamera->Zoom = 80;
+	}
+	// 7 - perspective front left view
+	if (glfwGetKey(m_pWindow, GLFW_KEY_7) == GLFW_PRESS)
+	{
+		bOrthographicProjection = false;
+		SetCameraView(glm::vec3(-6.0f, 8.5f, 6.0f), glm::vec3(0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
+		g_pCamera->Zoom = 80;
+	}
+	// 8 - perspective front right view
+	if (glfwGetKey(m_pWindow, GLFW_KEY_8) == GLFW_PRESS)
+	{
+		bOrthographicProjection = false;
+		SetCameraView(glm::vec3(6.0f, 8.5f, 6.0f), glm::vec3(-0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
+		g_pCamera->Zoom = 80;
+	}
+	// 9 - perspective back view
+	if (glfwGetKey(m_pWindow, GLFW_KEY_9) == GLFW_PRESS)
+	{
+		bOrthographicProjection = false;
+		SetCameraView(glm::vec3(0.0f, 8.5f, -8.0f), glm::vec3(0.0f, -0.5f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		g_pCamera->Zoom = 80;
+	}
 
-		g_pCamera->Position = glm::vec3(0.0f, 15.0f, 0.0f);
-		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
-		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
+	// P - cycle through perspective views
+	if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		if (!pWasPressed)
+		{
+			bOrthographicProjection = false;
+			perspIndex = (perspIndex + 1) % 4;
+
+			if (perspIndex == 0)
+				SetCameraView(glm::vec3(0.0f, 8.5f, 8.0f), glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (perspIndex == 1)
+				SetCameraView(glm::vec3(-6.0f, 8.5f, 6.0f), glm::vec3(0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (perspIndex == 2)
+				SetCameraView(glm::vec3(6.0f, 8.5f, 6.0f), glm::vec3(-0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (perspIndex == 3)
+				SetCameraView(glm::vec3(0.0f, 8.5f, -8.0f), glm::vec3(0.0f, -0.5f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			g_pCamera->Zoom = 80;
+			pWasPressed = true;
+		}
+	}
+	else if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_RELEASE)
+	{
+		pWasPressed = false;
+	}
+
+	// O - cycle through orthographic views
+	if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_PRESS)
+	{
+		if (!oWasPressed)
+		{
+			bOrthographicProjection = true;
+			orthoIndex = (orthoIndex + 1) % 5;
+
+			if (orthoIndex == 0)
+				SetCameraView(glm::vec3(0.0f, 7.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (orthoIndex == 1)
+				SetCameraView(glm::vec3(-10.0f, 7.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (orthoIndex == 2)
+				SetCameraView(glm::vec3(0.0f, 7.0f, -10.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			else if (orthoIndex == 3)
+				SetCameraView(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			else if (orthoIndex == 4)
+				SetCameraView(glm::vec3(10.0f, 7.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			oWasPressed = true;
+		}
+	}
+	else if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_RELEASE)
+	{
+		oWasPressed = false;
 	}
 }
 
