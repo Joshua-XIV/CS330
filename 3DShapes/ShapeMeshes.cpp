@@ -2084,13 +2084,13 @@ void ShapeMeshes::LoadTorusMesh(float thickness)
 					vertex_list.push_back(segments_list[i][j + 1]);
 					texture_coords.push_back(glm::vec2(u, v + verticalStep));
 					vertex_list.push_back(segments_list[0][j + 1]);
-					texture_coords.push_back(glm::vec2(0, v + verticalStep));
+					texture_coords.push_back(glm::vec2(1, v + verticalStep));
 					vertex_list.push_back(segments_list[i][j]);
 					texture_coords.push_back(glm::vec2(u, v));
 					vertex_list.push_back(segments_list[0][j]);
-					texture_coords.push_back(glm::vec2(0, v));
+					texture_coords.push_back(glm::vec2(1, v));
 					vertex_list.push_back(segments_list[0][j + 1]);
-					texture_coords.push_back(glm::vec2(0, v + verticalStep));
+					texture_coords.push_back(glm::vec2(1, v + verticalStep));
 					vertex_list.push_back(segments_list[i][j]);
 					texture_coords.push_back(glm::vec2(u, v));
 				}
