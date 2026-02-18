@@ -108,6 +108,9 @@ GLFWwindow* ViewManager::CreateDisplayWindow(const char* windowTitle)
 	// this callback is used to receive mouse moving events
 	glfwSetCursorPosCallback(window, &ViewManager::Mouse_Position_Callback);
 
+	// this callback is used to recieve mouse scroll events
+	glfwSetScrollCallback(window, &ViewManager::Mouse_Scroll_Callback);
+
 	// tell GLFW to capture all mouse events
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -148,6 +151,24 @@ void ViewManager::Mouse_Position_Callback(GLFWwindow* window, double xMousePos, 
 
 	// move the 3D camera according to the calculated offsets
 	g_pCamera->ProcessMouseMovement(xOffset, yOffset);
+}
+
+/***********************************************************
+ *  Mouse_Scroll_Callback()
+ *
+ *  This method is automatically called from GLFW whenever
+ *  the mouse scroll wheel is used within the active GLFW
+ *  display window. It adjusts the camera movement speed.
+ ***********************************************************/
+void ViewManager::Mouse_Scroll_Callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	// adjust the camera movement speed based on scroll wheel input
+	// positive yOffset = scroll up = decrease speed
+	// negative yOffset = scroll down = increase speed
+	if (NULL != g_pCamera)
+	{
+		g_pCamera->ProcessMouseScroll(yOffset);
+	}
 }
 
 /***********************************************************

@@ -394,6 +394,11 @@ void SceneManager::LoadSceneTextures()
 		"mat_fabric"
 	);
 
+	bReturn = CreateGLTexture(
+		"textures/dark_wood.jpg",
+		"dark_wood"
+	);
+
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
 	// are a total of 16 available slots for scene textures
@@ -445,12 +450,42 @@ void SceneManager::RenderScene()
 	m_coaster->Render(glm::vec3(1.0f, 5.24f, 2.0f), 1.4f);
 	m_table->Render(glm::vec3(0.0f, 0.0f, 0.0f));
 	RenderFloor();
+	RenderCarpet();
 	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
 	RenderPlaceMat(glm::vec3(-2.5f, 5.24f, -1.5f), 1.9f);
 	RenderPlaceMat(glm::vec3(3.7f, 5.24f, 0.7f), 1.9f);
 }
 
 void SceneManager::RenderFloor()
+{
+	glm::vec3 scaleXYZ;
+	float XrotationDegrees = 0.0f;
+	float YrotationDegrees = 0.0f;
+	float ZrotationDegrees = 0.0f;
+	glm::vec3 positionXYZ;
+
+	scaleXYZ = glm::vec3(15.0f, 0.01f, 15.0f);
+
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 0.0f;
+	ZrotationDegrees = 0.0f;
+
+	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	SetTransformations(
+		scaleXYZ,
+		XrotationDegrees,
+		YrotationDegrees,
+		ZrotationDegrees,
+		positionXYZ);
+
+	SetShaderTexture("dark_wood");
+	SetTextureUVScale(1.5f, 1.5f);
+
+	m_basicMeshes->DrawPlaneMesh();
+}
+
+void SceneManager::RenderCarpet()
 {
 	glm::vec3 scaleXYZ;
 	float XrotationDegrees = 0.0f;

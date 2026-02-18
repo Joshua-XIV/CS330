@@ -114,8 +114,12 @@ public:
 	// load all of the needed textures before rendering
 	void LoadSceneTextures();
 
-	// render the carpet floor
+	// render the wood floor
 	void RenderFloor();
+
+	// render the carpet floor
+	void RenderCarpet();
+
 	// redner the place mats on table
 	void RenderPlaceMat(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), float scale = 1.0f,
 		float xRotation = 0.0f, float yRotation = 0.0f, float zRotation = 0.0f);
