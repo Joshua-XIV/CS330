@@ -380,8 +380,10 @@ void SceneManager::PrepareScene()
 	// only one instance of a particular mesh needs to be
 	// loaded in memory no matter how many times it is drawn
 	// in the rendered 3D scene
-
 	m_basicMeshes->LoadPlaneMesh();
+	m_basicMeshes->LoadCylinderMesh();
+	m_basicMeshes->LoadTorusMesh();
+	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -392,6 +394,9 @@ void SceneManager::PrepareScene()
  ***********************************************************/
 void SceneManager::RenderScene()
 {
+	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
+	m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f), 1.0f, 0.0f, 0.0f, 0.0f);
+
 	// declare the variables for the transformations
 	glm::vec3 scaleXYZ;
 	float XrotationDegrees = 0.0f;

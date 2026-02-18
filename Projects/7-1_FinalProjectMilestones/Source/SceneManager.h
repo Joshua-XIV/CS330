@@ -11,6 +11,7 @@
 
 #include "ShaderManager.h"
 #include "ShapeMeshes.h"
+#include "Objects/Mug.h"
 
 #include <string>
 #include <vector>
@@ -54,6 +55,8 @@ private:
 	TEXTURE_INFO m_textureIDs[16];
 	// defined object materials
 	std::vector<OBJECT_MATERIAL> m_objectMaterials;
+	// mug class
+	Mug* m_mug;
 
 	// load texture images and convert to OpenGL texture data
 	bool CreateGLTexture(const char* filename, std::string tag);
