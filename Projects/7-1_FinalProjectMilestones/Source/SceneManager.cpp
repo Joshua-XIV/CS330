@@ -441,8 +441,8 @@ void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
 
-	//m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f));
-	//m_coaster->Render(glm::vec3(-4.0f, 1.0f, 0.0f));
+	m_mug->Render(glm::vec3(1.0f, 5.4f, 2.0f), 1.0f, 0.0f, 150.0f);
+	m_coaster->Render(glm::vec3(1.0f, 5.24f, 2.0f), 1.4f);
 	m_table->Render(glm::vec3(0.0f, 0.0f, 0.0f));
 	RenderFloor();
 	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
