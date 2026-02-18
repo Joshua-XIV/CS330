@@ -429,7 +429,6 @@ void SceneManager::PrepareScene()
 	m_basicMeshes->LoadPlaneMesh();
 	m_basicMeshes->LoadCylinderMesh();
 	m_basicMeshes->LoadTorusMesh();
-	m_basicMeshes->LoadTaperedCylinderMesh();
 	m_basicMeshes->LoadBoxMesh();
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
