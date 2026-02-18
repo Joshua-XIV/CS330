@@ -22,7 +22,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     // build rotation matrix for transforming offsets and the handle
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-// disable textures, shared across all parts
+    // disable textures, shared across all parts
     m_pShaderManager->setIntValue("bUseTexture", false);
 
     // --- base ring ---
