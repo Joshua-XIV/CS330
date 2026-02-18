@@ -13,6 +13,9 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{2bd92ddb-2463-4375-9ba8-a99db50a459d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Custom Objects">
+      <UniqueIdentifier>{2d6dcec3-7e91-4ba7-a161-9599f3062156}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\3DShapes\ShapeMeshes.cpp">
@@ -30,10 +33,18 @@
     <ClCompile Include="Source\ViewManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objects\Mug.cpp" />
-    <ClCompile Include="Source\Objects\SceneObject.cpp" />
-    <ClCompile Include="Source\Objects\Coaster.cpp" />
-    <ClCompile Include="Source\Objects\Table.cpp" />
+    <ClCompile Include="Source\Objects\Coaster.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Mug.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Table.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\SceneObject.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\SceneManager.h">
@@ -42,9 +53,17 @@
     <ClInclude Include="Source\ViewManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Objects\Mug.h" />
-    <ClInclude Include="Source\Objects\SceneObject.h" />
-    <ClInclude Include="Source\Objects\Coaster.h" />
-    <ClInclude Include="Source\Objects\Table.h" />
+    <ClInclude Include="Source\Objects\Coaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Mug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
