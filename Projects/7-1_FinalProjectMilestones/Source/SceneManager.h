@@ -12,6 +12,7 @@
 #include "ShaderManager.h"
 #include "ShapeMeshes.h"
 #include "Objects/Mug.h"
+#include "Objects/Coaster.h"
 
 #include <string>
 #include <vector>
@@ -55,8 +56,10 @@ private:
 	TEXTURE_INFO m_textureIDs[16];
 	// defined object materials
 	std::vector<OBJECT_MATERIAL> m_objectMaterials;
-	// mug class
+	// pointer to mug object
 	Mug* m_mug;
+	// pointer to coaster object
+	Coaster* m_coaster;
 
 	// load texture images and convert to OpenGL texture data
 	bool CreateGLTexture(const char* filename, std::string tag);
@@ -104,5 +107,8 @@ public:
 	// customize for their own 3D scene
 	void PrepareScene();
 	void RenderScene();
+
+	// load all of the needed textures before rendering
+	void LoadSceneTextures();
 
 };

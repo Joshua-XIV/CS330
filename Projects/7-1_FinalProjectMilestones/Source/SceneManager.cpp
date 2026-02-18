@@ -360,6 +360,27 @@ void SceneManager::SetShaderMaterial(
 	}
 }
 
+/***********************************************************
+ *  LoadSceneTextures()
+ *
+ *  This method is used for preparing the 3D scene by loading
+ *  the shapes, textures in memory to support the 3D scene
+ *  rendering
+ ***********************************************************/
+void SceneManager::LoadSceneTextures()
+{
+	bool bReturn = false;
+
+	bReturn = CreateGLTexture(
+		"textures/coaster_wood.jpg",
+		"coaster");
+
+	// after the texture image data is loaded into memory, the
+	// loaded textures need to be bound to texture slots - there
+	// are a total of 16 available slots for scene textures
+	BindGLTextures();
+}
+
 /**************************************************************/
 /*** STUDENTS CAN MODIFY the code in the methods BELOW for  ***/
 /*** preparing and rendering their own 3D replicated scenes.***/
@@ -380,10 +401,13 @@ void SceneManager::PrepareScene()
 	// only one instance of a particular mesh needs to be
 	// loaded in memory no matter how many times it is drawn
 	// in the rendered 3D scene
+	LoadSceneTextures();
 	m_basicMeshes->LoadPlaneMesh();
 	m_basicMeshes->LoadCylinderMesh();
 	m_basicMeshes->LoadTorusMesh();
+	m_basicMeshes->LoadTaperedCylinderMesh();
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
+	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -395,7 +419,9 @@ void SceneManager::PrepareScene()
 void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
+
 	m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f));
+	m_coaster->Render(glm::vec3(-1.0, 1.0f, 0.0f));
 
 	// declare the variables for the transformations
 	glm::vec3 scaleXYZ;
