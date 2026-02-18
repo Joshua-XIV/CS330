@@ -14,7 +14,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>    
 
-// declaration of the global variables and defines
+// declarations of the global variables and defines
 namespace
 {
 	// Variables for window width and height
@@ -33,7 +33,7 @@ namespace
 	bool gFirstMouse = true;
 
 	// time between current frame and last frame
-	float gDeltaTime = 0.0f; 
+	float gDeltaTime = 0.0f;
 	float gLastFrame = 0.0f;
 
 	// the following variable is false when orthographic projection
@@ -47,15 +47,15 @@ namespace
  *  The constructor for the class
  ***********************************************************/
 ViewManager::ViewManager(
-	ShaderManager *pShaderManager)
+	ShaderManager* pShaderManager)
 {
 	// initialize the member variables
 	m_pShaderManager = pShaderManager;
 	m_pWindow = NULL;
 	g_pCamera = new Camera();
 	// default camera view parameters
-	g_pCamera->Position = glm::vec3(0.0f, 5.0f, 12.0f);
-	g_pCamera->Front = glm::vec3(0.0f, -0.5f, -2.0f);
+	g_pCamera->Position = glm::vec3(0.0f, 2.0f, 12.0f);
+	g_pCamera->Front = glm::vec3(0.0f, 0.5f, -3.0f);
 	g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 	g_pCamera->Zoom = 80;
 	g_pCamera->MovementSpeed = 20;
@@ -101,11 +101,11 @@ GLFWwindow* ViewManager::CreateDisplayWindow(const char* windowTitle)
 	}
 	glfwMakeContextCurrent(window);
 
-	// tell GLFW to capture all mouse events
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 	// this callback is used to receive mouse moving events
 	glfwSetCursorPosCallback(window, &ViewManager::Mouse_Position_Callback);
+
+	// tell GLFW to capture all mouse events
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// enable blending for supporting tranparent rendering
 	glEnable(GL_BLEND);
@@ -160,6 +160,12 @@ void ViewManager::ProcessKeyboardEvents()
 		glfwSetWindowShouldClose(m_pWindow, true);
 	}
 
+	// if the camera object is null, then exit this method
+	if (NULL == g_pCamera)
+	{
+		return;
+	}
+
 	// process camera zooming in and out
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
@@ -179,13 +185,86 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
 	}
+
+	// process camera movement up and down
+	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
+	}
+
+	// process camera looking left and right
+	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(-50.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(50.0f, 0.0f);
+	}
+
+	// process camera looking up and down
+	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(0.0f, 50.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
+	}
+
+	// change between different projection views
+	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a front orthographic view
+		g_pCamera->Position = glm::vec3(0.0f, 7.0f, 10.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a side orthographic view
+		g_pCamera->Position = glm::vec3(10.0f, 7.0f, 0.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(-1.0f, 0.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
+	{
+		// change to a multi-view orthographic projection
+		bOrthographicProjection = true;
+
+		// change the camera settings to show a top orthographic view
+		g_pCamera->Position = glm::vec3(0.0f, 15.0f, 0.0f);
+		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
+	}
+	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
+	{
+		// change to perspective projection
+		bOrthographicProjection = false;
+
+		// change the camera settings to show a perspective view
+		g_pCamera->Position = glm::vec3(0.0f, 8.5f, 8.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -1.0f, -2.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Zoom = 80;
+	}
 }
 
 /***********************************************************
  *  PrepareSceneView()
  *
  *  This method is used for preparing the 3D scene by loading
- *  the shapes, textures in memory to support the 3D scene 
+ *  the shapes, textures in memory to support the 3D scene
  *  rendering
  ***********************************************************/
 void ViewManager::PrepareSceneView()
