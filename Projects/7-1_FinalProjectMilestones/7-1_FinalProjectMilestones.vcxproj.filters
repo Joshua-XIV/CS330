@@ -30,6 +30,8 @@
     <ClCompile Include="Source\ViewManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Objects\Mug.cpp" />
+    <ClCompile Include="Source\Objects\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\SceneManager.h">
@@ -38,5 +40,7 @@
     <ClInclude Include="Source\ViewManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Objects\Mug.h" />
+    <ClInclude Include="Source\Objects\SceneObject.h" />
   </ItemGroup>
 </Project>

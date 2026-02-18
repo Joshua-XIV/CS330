@@ -15,10 +15,14 @@
     <ClCompile Include="..\..\Utilities\ShaderManager.cpp" />
     <ClCompile Include="Source\MainCode.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\Objects\Mug.cpp" />
+    <ClCompile Include="Source\Objects\SceneObject.cpp" />
     <ClCompile Include="Source\ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Objects\Mug.h" />
     <ClInclude Include="Source\SceneManager.h" />
+    <ClInclude Include="Source\Objects\SceneObject.h" />
     <ClInclude Include="Source\ViewManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
