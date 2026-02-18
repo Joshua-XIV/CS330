@@ -395,7 +395,7 @@ void SceneManager::PrepareScene()
 void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
-	m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f), 1.0f, 0.0f, 0.0f, 0.0f);
+	m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f));
 
 	// declare the variables for the transformations
 	glm::vec3 scaleXYZ;
@@ -427,7 +427,7 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	SetShaderColor(1, 1, 1, 1);
+	SetShaderColor(0.5, 0.5, 0.5, 1);
 
 	// draw the mesh with transformation values
 	m_basicMeshes->DrawPlaneMesh();
