@@ -283,6 +283,26 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		g_pCamera->Zoom = 80;
 	}
+
+	// P key - perspective projection
+	if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS)
+	{
+		bOrthographicProjection = false;
+
+		g_pCamera->Position = glm::vec3(0.0f, 8.5f, 8.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -1.0f, -2.0f);
+		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		g_pCamera->Zoom = 80;
+	}
+	// O key - orthographic projection
+	if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_PRESS)
+	{
+		bOrthographicProjection = true;
+
+		g_pCamera->Position = glm::vec3(0.0f, 15.0f, 0.0f);
+		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
+		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
+	}
 }
 
 /***********************************************************
@@ -310,7 +330,10 @@ void ViewManager::PrepareSceneView()
 	view = g_pCamera->GetViewMatrix();
 
 	// define the current projection matrix
-	projection = glm::perspective(glm::radians(g_pCamera->Zoom), (GLfloat)WINDOW_WIDTH / (GLfloat)WINDOW_HEIGHT, 0.1f, 100.0f);
+	if (bOrthographicProjection)
+		projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
+	else
+		projection = glm::perspective(glm::radians(g_pCamera->Zoom), (GLfloat)WINDOW_WIDTH / (GLfloat)WINDOW_HEIGHT, 0.1f, 100.0f);
 
 	// if the shader manager object is valid
 	if (NULL != m_pShaderManager)
@@ -322,6 +345,8 @@ void ViewManager::PrepareSceneView()
 		// set the view position of the camera into the shader for proper rendering
 		m_pShaderManager->setVec3Value("viewPosition", g_pCamera->Position);
 	}
+
+
 
 	/*
 	*	was used to set to a nice starting position for the camera
