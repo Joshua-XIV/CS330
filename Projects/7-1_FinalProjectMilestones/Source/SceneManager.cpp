@@ -375,6 +375,25 @@ void SceneManager::LoadSceneTextures()
 		"textures/coaster_wood.jpg",
 		"coaster");
 
+	bReturn = CreateGLTexture(
+		"textures/table_wood.jpg",
+		"table");
+
+	bReturn = CreateGLTexture(
+		"textures/table_leg_wood.jpg",
+		"table_leg"
+	);
+
+	bReturn = CreateGLTexture(
+		"textures/carpet.jpg",
+		"carpet"
+	);
+
+	bReturn = CreateGLTexture(
+		"textures/mat_fabric.jpg",
+		"mat_fabric"
+	);
+
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
 	// are a total of 16 available slots for scene textures
@@ -406,8 +425,10 @@ void SceneManager::PrepareScene()
 	m_basicMeshes->LoadCylinderMesh();
 	m_basicMeshes->LoadTorusMesh();
 	m_basicMeshes->LoadTaperedCylinderMesh();
+	m_basicMeshes->LoadBoxMesh();
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
+	m_table = new Table(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -420,32 +441,31 @@ void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
 
-	m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f));
-	m_coaster->Render(glm::vec3(-1.0, 1.0f, 0.0f));
+	//m_mug->Render(glm::vec3(1.0f, 1.0f, 2.0f));
+	//m_coaster->Render(glm::vec3(-4.0f, 1.0f, 0.0f));
+	m_table->Render(glm::vec3(0.0f, 0.0f, 0.0f));
+	RenderFloor();
+	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
+	RenderPlaceMat(glm::vec3(-2.5f, 5.24f, -1.5f), 1.9f);
+	RenderPlaceMat(glm::vec3(3.7f, 5.24f, 0.7f), 1.9f);
+}
 
-	// declare the variables for the transformations
+void SceneManager::RenderFloor()
+{
 	glm::vec3 scaleXYZ;
 	float XrotationDegrees = 0.0f;
 	float YrotationDegrees = 0.0f;
 	float ZrotationDegrees = 0.0f;
 	glm::vec3 positionXYZ;
 
-	/*** Set needed transformations before drawing the basic mesh.  ***/
-	/*** This same ordering of code should be used for transforming ***/
-	/*** and drawing all the basic 3D shapes.						***/
-	/******************************************************************/
-	// set the XYZ scale for the mesh
-	scaleXYZ = glm::vec3(20.0f, 1.0f, 10.0f);
+	scaleXYZ = glm::vec3(10.0f, 0.01f, 10.0f);
 
-	// set the XYZ rotation for the mesh
 	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
-	// set the XYZ position for the mesh
 	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	// set the transformations into memory to be used on the drawn meshes
 	SetTransformations(
 		scaleXYZ,
 		XrotationDegrees,
@@ -453,9 +473,24 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
-	SetShaderColor(0.5, 0.5, 0.5, 1);
+	SetShaderTexture("carpet");
+	SetTextureUVScale(1.5f, 1.5f);
 
-	// draw the mesh with transformation values
-	m_basicMeshes->DrawPlaneMesh();
-	/****************************************************************/
+	m_basicMeshes->DrawCylinderMesh();
+}
+
+void SceneManager::RenderPlaceMat(glm::vec3 position, float scale,
+	float xRotation, float yRotation, float zRotation)
+{
+	SetTransformations(
+		glm::vec3(1.0f * scale, 0.01f, 1.0f * scale),
+		xRotation,
+		yRotation,
+		zRotation,
+		position);
+
+	SetShaderTexture("mat_fabric");
+	SetTextureUVScale(0.5f, 1.0f);
+
+	m_basicMeshes->DrawCylinderMesh();
 }

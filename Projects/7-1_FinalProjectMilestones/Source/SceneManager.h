@@ -13,6 +13,7 @@
 #include "ShapeMeshes.h"
 #include "Objects/Mug.h"
 #include "Objects/Coaster.h"
+#include "Objects/Table.h"
 
 #include <string>
 #include <vector>
@@ -60,6 +61,8 @@ private:
 	Mug* m_mug;
 	// pointer to coaster object
 	Coaster* m_coaster;
+	// pointer to table objet
+	Table* m_table;
 
 	// load texture images and convert to OpenGL texture data
 	bool CreateGLTexture(const char* filename, std::string tag);
@@ -110,5 +113,11 @@ public:
 
 	// load all of the needed textures before rendering
 	void LoadSceneTextures();
+
+	// render the carpet floor
+	void RenderFloor();
+	// redner the place mats on table
+	void RenderPlaceMat(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), float scale = 1.0f,
+		float xRotation = 0.0f, float yRotation = 0.0f, float zRotation = 0.0f);
 
 };
