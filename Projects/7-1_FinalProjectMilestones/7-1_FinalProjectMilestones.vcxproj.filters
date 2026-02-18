@@ -32,6 +32,8 @@
     </ClCompile>
     <ClCompile Include="Source\Objects\Mug.cpp" />
     <ClCompile Include="Source\Objects\SceneObject.cpp" />
+    <ClCompile Include="Source\Objects\Coaster.cpp" />
+    <ClCompile Include="Source\Objects\Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\SceneManager.h">
@@ -42,5 +44,7 @@
     </ClInclude>
     <ClInclude Include="Source\Objects\Mug.h" />
     <ClInclude Include="Source\Objects\SceneObject.h" />
+    <ClInclude Include="Source\Objects\Coaster.h" />
+    <ClInclude Include="Source\Objects\Table.h" />
   </ItemGroup>
 </Project>
