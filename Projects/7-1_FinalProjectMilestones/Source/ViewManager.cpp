@@ -54,11 +54,15 @@ ViewManager::ViewManager(
 	m_pWindow = NULL;
 	g_pCamera = new Camera();
 	// default camera view parameters
-	g_pCamera->Position = glm::vec3(0.0f, 2.0f, 12.0f);
-	g_pCamera->Front = glm::vec3(0.0f, 0.5f, -3.0f);
+	g_pCamera->Position = glm::vec3(-3.31f, 8.94f, 7.42f);
+	g_pCamera->Front = glm::vec3(0.35f, -0.46f, -0.82f);
 	g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 	g_pCamera->Zoom = 80;
 	g_pCamera->MovementSpeed = 20;
+
+	glm::vec3 front = glm::normalize(g_pCamera->Front);
+	g_pCamera->Pitch = glm::degrees(asin(front.y));
+	g_pCamera->Yaw = glm::degrees(atan2(front.z, front.x));
 }
 
 /***********************************************************
@@ -297,4 +301,25 @@ void ViewManager::PrepareSceneView()
 		// set the view position of the camera into the shader for proper rendering
 		m_pShaderManager->setVec3Value("viewPosition", g_pCamera->Position);
 	}
+
+	/*
+	*	was used to set to a nice starting position for the camera
+	*	but changes the window title to do so, commented out before
+	*	submitting assignment
+	* */
+	/*
+	if (NULL != m_pShaderManager && NULL != g_pCamera)
+	{
+		std::string title = "Camera - Pos: (" +
+			std::to_string(g_pCamera->Position.x) + ", " +
+			std::to_string(g_pCamera->Position.y) + ", " +
+			std::to_string(g_pCamera->Position.z) + ") | Front: (" +
+			std::to_string(g_pCamera->Front.x) + ", " +
+			std::to_string(g_pCamera->Front.y) + ", " +
+			std::to_string(g_pCamera->Front.z) + ") | Zoom: " +
+			std::to_string(g_pCamera->Zoom);
+
+		glfwSetWindowTitle(m_pWindow, title.c_str());
+	}
+	*/
 }
