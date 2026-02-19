@@ -21,9 +21,11 @@ Laptop::Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes) : SceneObject(
 void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    m_pShaderManager->setIntValue("bUseTexture", false);
+    // enable textures for frame
+    m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.4f, 0.4f, 0.4f));
     m_pShaderManager->setFloatValue("material.shininess", 32.0f);
+    m_pShaderManager->setSampler2DValue("objectTexture", 10);
 
     // --- base / keyboard deck --- flat silver box, no offset
     m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.76f, 0.76f, 0.76f));
@@ -43,6 +45,9 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
     SetTransformations(glm::vec3(3.0f * scale, 0.08f * scale, 1.5f * scale),
         screenRotation, position + screenOffset);
     m_basicMeshes->DrawBoxMesh();
+
+    // disable textures for remaining of the laptop
+    m_pShaderManager->setIntValue("bUseTexture", false);
 
     // --- screen outline --- dark outline around the screen
     m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.05f, 0.05f, 0.05f));
@@ -108,11 +113,13 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
 void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    m_pShaderManager->setIntValue("bUseTexture", false);
+    // enable textures for keys
+    m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.2f, 0.2f, 0.2f));
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
     m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.1f, 0.1f, 0.1f));
     m_pShaderManager->setFloatValue("material.shininess", 8.0f);
+    m_pShaderManager->setSampler2DValue("objectTexture", 11);
 
     float keyH = 0.062f;        // Y offset above deck
     float sqW = 0.155f;         // square key X
@@ -270,4 +277,7 @@ void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, fl
     SetTransformations(glm::vec3(sqW * scale, 0.02f * scale, arrD * scale),
         xRotation, yRotation, zRotation, position + rightArrOffset);
     m_basicMeshes->DrawBoxMesh();
+
+    // disable textures for next parts/items
+    m_pShaderManager->setIntValue("bUseTexture", false);
 }
