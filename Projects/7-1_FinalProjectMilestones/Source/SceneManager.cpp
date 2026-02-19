@@ -371,33 +371,58 @@ void SceneManager::LoadSceneTextures()
 {
 	bool bReturn = false;
 
+	// texture slot 0
 	bReturn = CreateGLTexture(
 		"textures/coaster_wood.jpg",
 		"coaster");
 
+	// texture slot 1
 	bReturn = CreateGLTexture(
 		"textures/table_wood.jpg",
 		"table");
 
+	// texture slot 2
 	bReturn = CreateGLTexture(
 		"textures/table_leg_wood.jpg",
 		"table_leg"
 	);
 
+	// texture slot 3
 	bReturn = CreateGLTexture(
 		"textures/carpet.jpg",
 		"carpet"
 	);
 
+	// texture slot 4
 	bReturn = CreateGLTexture(
 		"textures/mat_fabric.jpg",
 		"mat_fabric"
 	);
 
+	// texture slot 5
 	bReturn = CreateGLTexture(
 		"textures/dark_wood.jpg",
 		"dark_wood"
 	);
+
+	// texture slot 6
+	bReturn = CreateGLTexture(
+		"textures/brown_leather.jpg",
+		"brown_leather"
+	);
+
+	// texture slot 7
+	bReturn = CreateGLTexture(
+		"textures/black_leather.jpg",
+		"black_leather"
+	);
+
+	// texture slot 8
+	bReturn = CreateGLTexture(
+		"textures/red_leather.jpg",
+		"redleather"
+	);
+
 
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
@@ -433,6 +458,7 @@ void SceneManager::PrepareScene()
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
 	m_table = new Table(m_pShaderManager, m_basicMeshes);
+	m_book = new Book(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -447,7 +473,18 @@ void SceneManager::RenderScene()
 
 	m_mug->Render(glm::vec3(1.0f, 5.4f, 2.0f), 1.0f, 0.0f, 150.0f);
 	m_coaster->Render(glm::vec3(1.0f, 5.24f, 2.0f), 1.4f);
-	m_table->Render(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_table->Render();
+	// setting texture onto book object before rendering
+	m_book->SetCoverTexture(6);	// 6 - brown leather
+	m_book->Render(glm::vec3(1.3f, 5.46f, -1.5f), 0.8f, 0.0f, 60.0f, 0.0f);
+	// setting texture onto book object before rendering
+	m_book->SetCoverTexture(7);	// 7 - black leather
+	m_book->Render(glm::vec3(1.3f, 5.87f, -1.5f), 0.65f, 0.0f, 240.0f, 0.0f);
+	// setting texture onto book object before rendering
+	m_book->SetCoverTexture(8); // 8 - red leather
+	// setting UV scale of book before rendering
+	m_book->SetUVScale(0.3f, 0.5f);
+	m_book->Render(glm::vec3(1.3f, 6.19f, -1.5f), 0.5f, 0.0f, 60.0f, 0.0f);
 	RenderFloor();
 	RenderCarpet();
 	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
