@@ -15,6 +15,7 @@
 #include "Objects/Coaster.h"
 #include "Objects/Table.h"
 #include "Objects/Book.h"
+#include "Objects/Laptop.h"
 
 #include <string>
 #include <vector>
@@ -66,6 +67,8 @@ private:
 	Table* m_table;
 	// pointer to book object
 	Book* m_book;
+	// pointer to laptop object
+	Laptop* m_laptop;
 
 	// load texture images and convert to OpenGL texture data
 	bool CreateGLTexture(const char* filename, std::string tag);

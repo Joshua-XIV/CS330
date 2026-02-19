@@ -423,6 +423,12 @@ void SceneManager::LoadSceneTextures()
 		"redleather"
 	);
 
+	//texture slot 9
+	bReturn = CreateGLTexture(
+		"textures/pages.jpg",
+		"pages"
+	);
+
 
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
@@ -459,6 +465,7 @@ void SceneManager::PrepareScene()
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
 	m_table = new Table(m_pShaderManager, m_basicMeshes);
 	m_book = new Book(m_pShaderManager, m_basicMeshes);
+	m_laptop = new Laptop(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -471,20 +478,25 @@ void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
 
-	m_mug->Render(glm::vec3(1.0f, 5.4f, 2.0f), 1.0f, 0.0f, 150.0f);
-	m_coaster->Render(glm::vec3(1.0f, 5.24f, 2.0f), 1.4f);
+	m_mug->Render(glm::vec3(1.4f, 5.4f, 2.8f), 0.8f, 0.0f, 165.0f);
+	m_coaster->Render(glm::vec3(1.4f, 5.24f, 2.8f), 1.12f);
 	m_table->Render();
+	m_laptop->Render(glm::vec3(-1.9f, 5.32f, 3.75f), 0.95f, 0.0f, -25.0f, 0.0f);
+
 	// setting texture onto book object before rendering
 	m_book->SetCoverTexture(6);	// 6 - brown leather
 	m_book->Render(glm::vec3(1.3f, 5.46f, -1.5f), 0.8f, 0.0f, 60.0f, 0.0f);
+
 	// setting texture onto book object before rendering
 	m_book->SetCoverTexture(7);	// 7 - black leather
 	m_book->Render(glm::vec3(1.3f, 5.87f, -1.5f), 0.65f, 0.0f, 240.0f, 0.0f);
+
 	// setting texture onto book object before rendering
 	m_book->SetCoverTexture(8); // 8 - red leather
 	// setting UV scale of book before rendering
 	m_book->SetUVScale(0.3f, 0.5f);
 	m_book->Render(glm::vec3(1.3f, 6.19f, -1.5f), 0.5f, 0.0f, 60.0f, 0.0f);
+
 	RenderFloor();
 	RenderCarpet();
 	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
