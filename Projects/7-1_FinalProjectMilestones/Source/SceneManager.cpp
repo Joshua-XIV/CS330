@@ -429,6 +429,17 @@ void SceneManager::LoadSceneTextures()
 		"pages"
 	);
 
+	//texture slot 10
+	bReturn = CreateGLTexture(
+		"textures/steel.jpg",
+		"steel"
+	);
+
+	//texture slot 11
+	bReturn = CreateGLTexture(
+		"textures/black_plastic.jpg",
+		"black_plastic"
+	);
 
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
