@@ -167,7 +167,7 @@ void SceneManager::RenderScene()
 	 *  After multiple trial and errors, final adjustments to x rotation
 	 *	was 170 degrees to be in line with the camera and match the image
 	 ***********************************************************/
-	XrotationDegrees = 170.0f;
+	XrotationDegrees = 180.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
@@ -176,7 +176,7 @@ void SceneManager::RenderScene()
 	 *  Also adjusted the mesh's y position to move up one
 	 *	and a tiny bit to add a small gap to match the image.
 	 ***********************************************************/
-	positionXYZ = glm::vec3(0.0f, 1.05f, 0.0f);
+	positionXYZ = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	// set the transformations into memory to be used on the drawn meshes
 	SetTransformations(
@@ -204,7 +204,7 @@ void SceneManager::RenderScene()
 	 *  After multiple trial and errors, final adjustments to x rotation
 	 *	was -30 degrees to be in line with the camera and match the image
 	 ***********************************************************/
-	XrotationDegrees = -30.0f;
+	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
