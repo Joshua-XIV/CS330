@@ -28,4 +28,8 @@ public:
 		float xRotation = 0.0f,
 		float yRotation = 0.0f,
 		float zRotation = 0.0f) override;
+
+private:
+	// Helper function to render the keyboar to the laptop
+	void RenderKeyboard(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation);
 };
