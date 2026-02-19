@@ -7,8 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Book::Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSlot = 0) 
-    : SceneObject(shaderManager, meshes), m_coverTextureSlot(coverTextureSlot) {}
+Book::Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSlot, glm::vec2 uvScale)
+    : SceneObject(shaderManager, meshes), m_coverTextureSlot(coverTextureSlot), m_uvScale(uvScale){}
 
 /***********************************************************
  *  Render()
@@ -26,7 +26,7 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
     // --- front cover --- uses passed in cover texture slot
     m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setSampler2DValue("objectTexture", m_coverTextureSlot);
-    m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
+    m_pShaderManager->setVec2Value("UVscale", m_uvScale);
 
     // offset 0.25 up to sit on top of the pages
     glm::vec3 frontCoverOffset = ScaledOffset(rotation, scale, 0.0f, 0.25f, 0.0f);
@@ -51,6 +51,7 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
         xRotation, yRotation, zRotation, position);
     m_basicMeshes->DrawBoxMesh();
 
+    SetUVScale(0.5f, 0.1f);
     // --- spine --- thin box on the left side connecting covers
     m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setSampler2DValue("objectTexture", m_coverTextureSlot);
