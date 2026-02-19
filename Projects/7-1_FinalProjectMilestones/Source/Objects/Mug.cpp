@@ -32,7 +32,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.545f, 0.271f, 0.075f, 1.0f));
 
     // offset -0.01 down to sit flush at the base
-    glm::vec3 outerBottomOffset = glm::vec3(rotation * glm::vec4(0.0f, -0.01f * scale, 0.0f, 0.0f));
+    glm::vec3 outerBottomOffset = ScaledOffset(rotation, scale, 0.0f, -0.01f, 0.0f);
     SetTransformations(glm::vec3(0.61f * scale, 0.06f * scale, 0.61f * scale),
         xRotation, yRotation, zRotation, position + outerBottomOffset);
     m_basicMeshes->DrawCylinderMesh(false, true, true);
@@ -41,7 +41,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
 
     // offset 0.05 up from base
-    glm::vec3 middleBottomOffset = glm::vec3(rotation * glm::vec4(0.0f, 0.05f * scale, 0.0f, 0.0f));
+    glm::vec3 middleBottomOffset = ScaledOffset(rotation, scale, 0.0f, 0.05f, 0.0f);
     SetTransformations(glm::vec3(0.61f * scale, 0.3f * scale, 0.61f * scale),
         xRotation, yRotation, zRotation, position + middleBottomOffset);
     m_basicMeshes->DrawCylinderMesh(false, false, true);
@@ -50,7 +50,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.545f, 0.271f, 0.075f, 1.0f));
 
     // offset 0.35 up
-    glm::vec3 topBottomOffset = glm::vec3(rotation * glm::vec4(0.0f, 0.35f * scale, 0.0f, 0.0f));
+    glm::vec3 topBottomOffset = ScaledOffset(rotation, scale, 0.0f, 0.35f, 0.0f);
     SetTransformations(glm::vec3(0.61f * scale, 0.05f * scale, 0.61f * scale),
         xRotation, yRotation, zRotation, position + topBottomOffset);
     m_basicMeshes->DrawCylinderMesh(false, false, true);
@@ -69,7 +69,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.35f, 0.5f, 0.45f, 1.0f));
 
     // offset 0.05 up so it sits inside the rim
-    glm::vec3 innerOffset = glm::vec3(rotation * glm::vec4(0.0f, 0.05f * scale, 0.0f, 0.0f));
+    glm::vec3 innerOffset = ScaledOffset(rotation, scale, 0.0f, 0.05f, 0.0f);
     SetTransformations(glm::vec3(0.55f * scale, 1.15f * scale, 0.55f * scale),
         xRotation, yRotation, zRotation, position + innerOffset);
     m_basicMeshes->DrawCylinderMesh(false, true, true);
@@ -81,7 +81,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     glm::mat4 handleRotation = rotation * handleBaseRot;
 
     // offset 0.59 on X and 0.8 on Y to sit on the side of the mug
-    glm::vec3 handleOffset = glm::vec3(rotation * glm::vec4(0.59f * scale, 0.8f * scale, 0.0f, 0.0f));
+    glm::vec3 handleOffset = ScaledOffset(rotation, scale, 0.59f, 0.8f, 0.0f);
     SetTransformations(glm::vec3(0.3f * scale, 0.3f * scale, 0.8f * scale),
         handleRotation, position + handleOffset);
     m_basicMeshes->DrawHalfTorusMesh();

@@ -49,7 +49,7 @@ void Coaster::Render(glm::vec3 position, float scale, float xRotation, float yRo
     glm::mat4 ringRotation = rotation * ringBaseRot;
 
     // offset 0.1 up to sit on top of the base cylinder
-    glm::vec3 ringOffset = glm::vec3(rotation * glm::vec4(0.0f, 0.1f * scale, 0.0f, 0.0f));
+    glm::vec3 ringOffset = ScaledOffset(rotation, scale, 0.0f, 0.1f, 0.0f);
     SetTransformations(glm::vec3(0.58f * scale, 0.58f * scale, 0.35f * scale),
         ringRotation, position + ringOffset);
     m_basicMeshes->DrawTorusMesh();
