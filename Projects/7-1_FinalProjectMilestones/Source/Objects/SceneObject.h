@@ -53,4 +53,10 @@ protected:
     // builds a rotation matrix from X, Y, Z rotation values.
     // rotation order is Z * Y * X.
     glm::mat4 BuildRotationMatrix(float xRotation, float yRotation, float zRotation);
+
+    // returns a rotation-transformed and scaled offset vector.
+    // only rotation is applied, not translation.
+    glm::vec3 ScaledOffset(glm::mat4 rotation, float scale, float x, float y, float z) {
+        return glm::vec3(rotation * glm::vec4(x * scale, y * scale, z * scale, 0.0f));
+    }
 };
