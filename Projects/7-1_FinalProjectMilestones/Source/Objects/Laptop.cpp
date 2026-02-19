@@ -93,6 +93,18 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
     RenderKeyboard(position, scale, xRotation, yRotation, zRotation);
 }
 
+/***********************************************************
+ *  RenderKeyboard()
+ *
+ *  Draws all keys of the laptop keyboard relative to the
+ *  given position. This will be called in Render.
+ *
+ *  Six rows of keys are drawn using box meshes offset from
+ *  the base deck position. Rows increase in Z from back to
+ *  front. Wide modifier keys anchor each row on the left or
+ *  right. The bottom row includes a spacebar and stacked
+ *  arrow keys.
+ ***********************************************************/
 void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
