@@ -42,7 +42,8 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
     m_basicMeshes->DrawBoxMesh();
 
     // --- pages --- flat color, slightly smaller than covers
-    m_pShaderManager->setIntValue("bUseTexture", false);
+    m_pShaderManager->setSampler2DValue("objectTexture", 9);
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(0.3f, 0.8f));
     m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.95f, 0.92f, 0.85f));
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.95f, 0.92f, 0.85f, 1.0f));
 
@@ -51,11 +52,9 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
         xRotation, yRotation, zRotation, position);
     m_basicMeshes->DrawBoxMesh();
 
-    SetUVScale(0.5f, 0.1f);
     // --- spine --- thin box on the left side connecting covers
-    m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setSampler2DValue("objectTexture", m_coverTextureSlot);
-    m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(0.5f, 1.0f));
 
     // offset -1.0 on X to sit on the left edge
     glm::vec3 spineOffset = ScaledOffset(rotation, scale, -1.0f, 0.0f, 0.0f);

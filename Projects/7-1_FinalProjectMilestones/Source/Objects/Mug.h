@@ -5,7 +5,7 @@
  *  Mug
  *
  *  This class handles the rendering of a 3D mug object
- *  composed of multiple meshes (mainly cylinders and one torus).
+ *  composed of multiple meshes.
  *  All parts are rendered relative to the given position
  *  so the entire mug moves and rotates as one unit.
  ***********************************************************/
