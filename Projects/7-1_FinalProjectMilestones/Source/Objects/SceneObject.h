@@ -58,14 +58,33 @@ protected:
         float shininess;
     };
 
-    // shared materials across objects
-    const ShaderMaterial MAT_SILVER = { glm::vec3(0.76f, 0.76f, 0.76f), glm::vec3(0.4f,  0.4f,  0.4f),  32.0f };
-    const ShaderMaterial MAT_DARK_KEY = { glm::vec3(0.2f,  0.2f,  0.2f),  glm::vec3(0.1f,  0.1f,  0.1f),  8.0f };
-    const ShaderMaterial MAT_CRYSTAL = { glm::vec3(0.05f, 0.08f, 0.1f),  glm::vec3(1.0f,  1.0f,  1.0f),  256.0f };
-    const ShaderMaterial MAT_WOOD = { glm::vec3(0.35f, 0.22f, 0.1f),  glm::vec3(0.1f,  0.08f, 0.05f), 16.0f };
-    const ShaderMaterial MAT_TEAL = { glm::vec3(0.4f,  0.55f, 0.5f),  glm::vec3(0.05f, 0.05f, 0.05f), 4.0f };
-    const ShaderMaterial MAT_BROWN = { glm::vec3(0.545f,0.271f,0.075f),glm::vec3(0.545f,0.271f,0.075f),4.0f };
+    // shared materials reused across multiple objects.
+    // defined here so all derived classes have access without
+    // repeating the same magic values in each object's source file.
+    // static since we only need one instance of each material to apply
+    // which helps reduce memory
+    static const ShaderMaterial MAT_SILVER;
+    static const ShaderMaterial MAT_SCREEN;
+    static const ShaderMaterial MAT_DECK_OUTLINE;
+    static const ShaderMaterial MAT_DARK_KEY;
+    static const ShaderMaterial MAT_CENTERPIECE_BASE;
+    static const ShaderMaterial MAT_CRYSTAL_BODY;
+    static const ShaderMaterial MAT_CRYSTAL_INNER;
+    static const ShaderMaterial MAT_WOOD;
+    static const ShaderMaterial MAT_TEAL;
+    static const ShaderMaterial MAT_BROWN;
+    static const ShaderMaterial MAT_COASTER;
+    static const ShaderMaterial MAT_BOOK_COVER;
+    static const ShaderMaterial MAT_BOOK_PAGES;
 
+    /***********************************************************
+     *  SetShaderMaterial()
+     *
+     *  wrapper to upload diffuse color, specular color,
+     *  and shininess into the shader in one call.
+     *
+     *  mat - the ShaderMaterial to apply to the next draw call
+     ***********************************************************/
     void SetShaderMaterial(const ShaderMaterial& mat) {
         m_pShaderManager->setVec3Value("material.diffuseColor", mat.diffuse);
         m_pShaderManager->setVec3Value("material.specularColor", mat.specular);

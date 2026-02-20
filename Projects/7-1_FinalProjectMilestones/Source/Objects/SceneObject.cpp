@@ -1,6 +1,23 @@
 #include "SceneObject.h"
 #include <glm/gtx/transform.hpp>
 
+// shared materials reused across multiple objects.
+// defined here so all derived classes have access without
+// repeating the same magic values in each object's source file.
+const SceneObject::ShaderMaterial SceneObject::MAT_SILVER = { glm::vec3(0.76f, 0.76f, 0.76f), glm::vec3(0.4f,  0.4f,  0.4f),   32.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_SCREEN = { glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_DECK_OUTLINE = { glm::vec3(0.15f, 0.15f, 0.15f), glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_DARK_KEY = { glm::vec3(0.2f,  0.2f,  0.2f),  glm::vec3(0.1f,  0.1f,  0.1f),   8.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_CENTERPIECE_BASE = { glm::vec3(0.15f, 0.15f, 0.18f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_BODY = { glm::vec3(0.05f, 0.08f, 0.1f),  glm::vec3(0.5f, 0.5f, 0.5f), 128.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_INNER = { glm::vec3(0.02f, 0.04f, 0.05f), glm::vec3(0.5f, 0.5f, 0.5f), 256.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_WOOD = { glm::vec3(0.35f, 0.22f, 0.1f),  glm::vec3(0.1f,  0.08f, 0.05f),  16.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_TEAL = { glm::vec3(0.4f,  0.55f, 0.5f),  glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_BROWN = { glm::vec3(0.545f,0.271f,0.075f),glm::vec3(0.545f,0.271f,0.075f), 4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_COASTER = { glm::vec3(0.7f, 0.65f, 0.6f), glm::vec3(0.02f, 0.02f, 0.02f), 2.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_BOOK_COVER = { glm::vec3(0.3f, 0.25f, 0.2f),  glm::vec3(0.05f, 0.05f, 0.05f), 4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_BOOK_PAGES = { glm::vec3(0.95f, 0.92f, 0.85f), glm::vec3(0.05f, 0.05f, 0.05f), 4.0f };
+
 /***********************************************************
  *  SetTransformations()
  *
