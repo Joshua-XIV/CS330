@@ -14,7 +14,10 @@
     <ClCompile Include="..\..\3DShapes\ShapeMeshes.cpp" />
     <ClCompile Include="..\..\Utilities\ShaderManager.cpp" />
     <ClCompile Include="Source\MainCode.cpp" />
+    <ClCompile Include="Source\Objects\Book.cpp" />
+    <ClCompile Include="Source\Objects\Centerpiece.cpp" />
     <ClCompile Include="Source\Objects\Coaster.cpp" />
+    <ClCompile Include="Source\Objects\Laptop.cpp" />
     <ClCompile Include="Source\Objects\Table.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Objects\Mug.cpp" />
@@ -22,7 +25,10 @@
     <ClCompile Include="Source\ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Objects\Book.h" />
+    <ClInclude Include="Source\Objects\Centerpiece.h" />
     <ClInclude Include="Source\Objects\Coaster.h" />
+    <ClInclude Include="Source\Objects\Laptop.h" />
     <ClInclude Include="Source\Objects\Mug.h" />
     <ClInclude Include="Source\Objects\Table.h" />
     <ClInclude Include="Source\SceneManager.h" />
