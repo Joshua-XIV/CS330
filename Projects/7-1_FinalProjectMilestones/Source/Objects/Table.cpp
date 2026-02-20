@@ -7,7 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Table::Table(ShaderManager* shaderManager, ShapeMeshes* basicMeshes) : SceneObject(shaderManager, basicMeshes) {}
+Table::Table(ShaderManager* shaderManager, ShapeMeshes* basicMeshes, int woodLegTexture, int tableTopTexture) 
+    : SceneObject(shaderManager, basicMeshes), m_woodLegTexture(woodLegTexture), m_tableTopTexture(tableTopTexture) {}
 
 /***********************************************************
  *  Render()
@@ -24,7 +25,7 @@ void Table::Render(glm::vec3 position, float scale, float xRotation, float yRota
 
     // table_leg texture at slot 2, shared across all legs
     m_pShaderManager->setIntValue("bUseTexture", true);
-    m_pShaderManager->setSampler2DValue("objectTexture", 2);
+    m_pShaderManager->setSampler2DValue("objectTexture", m_woodLegTexture);
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
 
     float SLANT_LEG_Y_SCALE = 2.5f;
@@ -124,7 +125,7 @@ void Table::Render(glm::vec3 position, float scale, float xRotation, float yRota
     m_basicMeshes->DrawBoxMesh();
 
     // --- table top --- flat cylinder, table_wood texture at slot 1
-    m_pShaderManager->setSampler2DValue("objectTexture", 1);
+    m_pShaderManager->setSampler2DValue("objectTexture", m_tableTopTexture);
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
 
     // offset 5.03 up to sit above all legs

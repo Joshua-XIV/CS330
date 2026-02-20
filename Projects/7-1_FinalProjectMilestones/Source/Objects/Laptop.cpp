@@ -7,7 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Laptop::Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes) : SceneObject(shaderManager, meshes) {}
+Laptop::Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes, int laptopFrameTexture, int keyTexture)
+    : SceneObject(shaderManager, meshes), m_laptopFrameTexture(laptopFrameTexture), m_keyTexture(keyTexture) {}
 
 /***********************************************************
  *  Render()
@@ -21,14 +22,12 @@ Laptop::Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes) : SceneObject(
 void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    // enable textures for frame
+    // enable textures for the aluminum body panels
     m_pShaderManager->setIntValue("bUseTexture", true);
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.4f, 0.4f, 0.4f));
-    m_pShaderManager->setFloatValue("material.shininess", 32.0f);
-    m_pShaderManager->setSampler2DValue("objectTexture", 10);
+    m_pShaderManager->setSampler2DValue("objectTexture", m_laptopFrameTexture);
 
     // --- base / keyboard deck --- flat silver box, no offset
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.76f, 0.76f, 0.76f));
+    SetShaderMaterial(MAT_SILVER);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.76f, 0.76f, 0.76f, 1.0f));
 
     SetTransformations(glm::vec3(3.0f * scale, 0.1f * scale, 2.0f * scale),
@@ -46,11 +45,11 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
         screenRotation, position + screenOffset);
     m_basicMeshes->DrawBoxMesh();
 
-    // disable textures for remaining of the laptop
+    // disable textures for remaining parts
     m_pShaderManager->setIntValue("bUseTexture", false);
 
-    // --- screen outline --- dark outline around the screen
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.05f, 0.05f, 0.05f));
+    // --- screen outline --- near-black border around the screen panel, sides only
+    SetShaderMaterial(MAT_SCREEN);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.05f, 0.05f, 0.05f, 1.0f));
 
     glm::vec3 screenOutlineOffset = ScaledOffset(rotation, scale, 0.0f, 0.8f, -1.05f);
@@ -62,20 +61,17 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
     m_basicMeshes->DrawBoxMeshSide(ShapeMeshes::front);
     m_basicMeshes->DrawBoxMeshSide(ShapeMeshes::back);
 
-    // --- screen face --- dark box on the inner face of the screen panel
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.05f, 0.05f, 0.05f));
-    m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.05f, 0.05f, 0.05f, 1.0f));
-
+    // --- screen face --- near-black box on the inner face of the screen panel
     glm::vec3 screenFaceOffset = ScaledOffset(rotation, scale, 0.0f, 0.8f, -1.04f);
     SetTransformations(glm::vec3(2.8f * scale, 0.01f * scale, 1.4f * scale),
         screenRotation, position + screenFaceOffset);
-
     m_basicMeshes->DrawBoxMesh();
 
     // --- keyboard area --- dark outline on top of the base, sides only
+    SetShaderMaterial(MAT_DECK_OUTLINE);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.15f, 0.15f, 0.15f, 1.0f));
-    glm::vec3 keyboardOffset = ScaledOffset(rotation, scale, 0.0f, 0.06f, -0.275f);
 
+    glm::vec3 keyboardOffset = ScaledOffset(rotation, scale, 0.0f, 0.06f, -0.275f);
     SetTransformations(glm::vec3(2.6f * scale, 0.01f * scale, 1.05f * scale),
         xRotation, yRotation, zRotation, position + keyboardOffset);
 
@@ -84,9 +80,8 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
     m_basicMeshes->DrawBoxMeshSide(ShapeMeshes::front);
     m_basicMeshes->DrawBoxMeshSide(ShapeMeshes::back);
 
-    // --- keyboard area --- dark outline on top of the base, sides only
+    // --- mousepad outline --- dark outline on top of the base, sides only
     glm::vec3 mousePadOffset = ScaledOffset(rotation, scale, 0.0f, 0.06f, 0.65f);
-
     SetTransformations(glm::vec3(1.2f * scale, 0.01f * scale, 0.65f * scale),
         xRotation, yRotation, zRotation, position + mousePadOffset);
 
@@ -113,13 +108,11 @@ void Laptop::Render(glm::vec3 position, float scale, float xRotation, float yRot
 void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    // enable textures for keys
+    // enable textures and apply key material for all keys
     m_pShaderManager->setIntValue("bUseTexture", true);
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.2f, 0.2f, 0.2f));
+    m_pShaderManager->setSampler2DValue("objectTexture", m_keyTexture);
+    SetShaderMaterial(MAT_DARK_KEY);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.1f, 0.1f, 0.1f));
-    m_pShaderManager->setFloatValue("material.shininess", 8.0f);
-    m_pShaderManager->setSampler2DValue("objectTexture", 11);
 
     float keyH = 0.062f;        // Y offset above deck
     float sqW = 0.155f;         // square key X
@@ -232,7 +225,7 @@ void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, fl
 
     // spacebar - long X
     // adjusted long enough to have arrow keys line up with the edge of other keys
-    float spaceW = 5.62 * step - gap;
+    float spaceW = 5.62f * step - gap;
     float spaceX = startX + 4 * step + spaceW / 2.0f;
     glm::vec3 spaceOffset = ScaledOffset(rotation, scale, spaceX, keyH, row6Z);
     SetTransformations(glm::vec3(spaceW * scale, 0.02f * scale, sqD * scale),
@@ -249,11 +242,13 @@ void Laptop::RenderKeyboard(glm::vec3 position, float scale, float xRotation, fl
         m_basicMeshes->DrawBoxMesh();
     }
 
-    // arrow keys - skinny Z
-    // left arrow
+    // arrow keys - skinny Z, clustered at the right end of row 6
+    // arrShift pushes left/down/right forward, upShift pulls up arrow back
     float arrStartX = afterSpaceX + 2 * step;
     float arrShift = (arrD + gap) * 0.5f;
     float upShift = (arrD + gap) * -0.4f;
+
+    // left arrow
     glm::vec3 leftArrOffset = ScaledOffset(rotation, scale, arrStartX + sqW / 2.0f, keyH, row6Z + arrShift);
     SetTransformations(glm::vec3(sqW * scale, 0.02f * scale, arrD * scale),
         xRotation, yRotation, zRotation, position + leftArrOffset);

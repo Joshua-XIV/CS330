@@ -11,7 +11,8 @@
 class Book : public SceneObject {
 public:
     // constructor
-    Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSlot = 0, glm::vec2 uvScale = glm::vec2(1.0f, 1.0f));
+    Book(ShaderManager* shaderManager, ShapeMeshes* meshes, 
+        int coverTextureSlot = 0, int pageTextureSlot = 0, glm::vec2 uvScale = glm::vec2(1.0f, 1.0f));
 
     // Draws the book at the given world position.
     // All parts are positioned relative to the given position.
@@ -30,9 +31,11 @@ public:
         float zRotation = 0.0f) override;
 
     void SetCoverTexture(int coverTextureSlot) { m_coverTextureSlot = coverTextureSlot; };
+    void SetPageTexture(int pageTextureSlot) { m_pageTextureSlot = pageTextureSlot; };
     void SetUVScale(float u, float v) { m_uvScale = glm::vec2(u, v); };
 
 private:
     int m_coverTextureSlot = 0;
+    int m_pageTextureSlot = 0;
     glm::vec2 m_uvScale = glm::vec2(1.0f, 1.0f);
 };

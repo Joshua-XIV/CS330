@@ -22,12 +22,10 @@ Centerpiece::Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes) : Sc
 void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    // glass-like material - high specular, low diffuse, cool blue tint
     m_pShaderManager->setIntValue("bUseTexture", false);
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
     // --- flat base --- thin dark cylinder the prism rests on
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.15f, 0.15f, 0.18f));
+    SetShaderMaterial(MAT_CENTERPIECE_BASE);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.15f, 0.15f, 0.18f, 1.0f));
 
     // no offset, base sits at position
@@ -35,11 +33,8 @@ void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float
         xRotation, yRotation, zRotation, position);
     m_basicMeshes->DrawCylinderMesh(true, true, true);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // --- prism body --- crystal glass triangular prism standing upright
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.05f, 0.08f, 0.1f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.5f, 0.5f, 0.5f));
+    SetShaderMaterial(MAT_CRYSTAL_BODY);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.4f, 0.55f, 0.6f, 0.3f));
 
     // offset up so it sits on top of the base
@@ -49,13 +44,11 @@ void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float
     m_basicMeshes->DrawPrismMesh();
 
     // --- inner highlight --- slightly smaller prism inside main body
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.02f, 0.04f, 0.05f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.5f, 0.5f, 0.5f));
+    SetShaderMaterial(MAT_CRYSTAL_INNER);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.5f, 0.7f, 0.75f, 0.2f));
 
     // same offset as prism body, slightly smaller scale
     SetTransformations(glm::vec3(0.36f * scale, 1.36f * scale, 0.36f * scale),
         xRotation, yRotation, zRotation, position + prismOffset);
     m_basicMeshes->DrawPrismMesh();
-    glDisable(GL_BLEND);
 }

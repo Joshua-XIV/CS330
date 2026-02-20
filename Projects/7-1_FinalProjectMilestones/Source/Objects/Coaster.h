@@ -12,7 +12,7 @@
 class Coaster : public SceneObject {
 public:
     // constructor
-    Coaster(ShaderManager* shaderManager, ShapeMeshes* meshes);
+    Coaster(ShaderManager* shaderManager, ShapeMeshes* meshes, int coasterTexture = 0);
 
 
     // Draws the coaster at the given world position.
@@ -29,4 +29,9 @@ public:
         float xRotation = 0.0f,
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
+
+    void SetCoasterTexture(int coasterTexture) { m_coasterTexture = coasterTexture; };
+
+private:
+    int m_coasterTexture = 0;
 };

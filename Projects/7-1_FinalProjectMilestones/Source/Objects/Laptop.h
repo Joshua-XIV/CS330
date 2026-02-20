@@ -12,7 +12,7 @@
 class Laptop : SceneObject {
 public:
 	// constructor
-	Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes);
+	Laptop(ShaderManager* shaderManager, ShapeMeshes* meshes, int laptopFrameTexture = 0, int keyTexture = 0);
 
 	// Draws the laptop at the given world position.
 	// All parts are positioned relative to the given position.
@@ -29,7 +29,13 @@ public:
 		float yRotation = 0.0f,
 		float zRotation = 0.0f) override;
 
+	void SetLaptopFrameTexture(int laptopFrameTexture) { m_laptopFrameTexture = laptopFrameTexture; };
+
+	void SetKeyTexture(int keyTexture) { m_keyTexture = keyTexture; };
+
 private:
-	// Helper function to render the keyboar to the laptop
+	int m_laptopFrameTexture = 0;
+	int m_keyTexture = 0;
+	// Helper function to render the keyboard to the laptop
 	void RenderKeyboard(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation);
 };

@@ -26,9 +26,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_pShaderManager->setIntValue("bUseTexture", false);
 
     // --- base ring --- brown band at the bottom
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.545f, 0.271f, 0.075f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.545f, 0.271f, 0.075f));
-    m_pShaderManager->setFloatValue("material.shininess", 4.0f);
+    SetShaderMaterial(MAT_BROWN);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.545f, 0.271f, 0.075f, 1.0f));
 
     // offset -0.01 down to sit flush at the base
@@ -37,7 +35,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
         xRotation, yRotation, zRotation, position + outerBottomOffset);
     m_basicMeshes->DrawCylinderMesh(false, true, true);
 
-    // --- white band --- decorative stripe
+    // --- white band --- decorative stripe, material carries over from base ring
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
 
     // offset 0.05 up from base
@@ -56,9 +54,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_basicMeshes->DrawCylinderMesh(false, false, true);
 
     // --- outer body --- main teal cylinder drawn over the bands, no offset
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.4f, 0.55f, 0.5f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.05f, 0.05f, 0.05f));
-    m_pShaderManager->setFloatValue("material.shininess", 4.0f);
+    SetShaderMaterial(MAT_TEAL);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.4f, 0.55f, 0.5f, 1.0f));
 
     SetTransformations(glm::vec3(0.6f * scale, 1.2f * scale, 0.6f * scale),
@@ -66,6 +62,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
     m_basicMeshes->DrawCylinderMesh(false, true, true);
 
     // --- inner wall --- slightly smaller radius to create hollow look
+    // objectColor only - slightly darker teal, material carries over from outer body
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.35f, 0.5f, 0.45f, 1.0f));
 
     // offset 0.05 up so it sits inside the rim
@@ -76,6 +73,7 @@ void Mug::Render(glm::vec3 position, float scale, float xRotation, float yRotati
 
     // --- handle --- half torus, base rotation 270 on Z orients it upright
     // mug rotation matrix applied on top to follow object rotation
+    // objectColor only - same teal as body, material carries over
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.4f, 0.55f, 0.5f, 1.0f));
     glm::mat4 handleBaseRot = glm::rotate(glm::radians(270.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     glm::mat4 handleRotation = rotation * handleBaseRot;

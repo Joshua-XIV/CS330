@@ -7,7 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Coaster::Coaster(ShaderManager* shadeManager, ShapeMeshes* meshes) : SceneObject(shadeManager, meshes) {}
+Coaster::Coaster(ShaderManager* shadeManager, ShapeMeshes* meshes, int coasterTexture) 
+    : SceneObject(shadeManager, meshes), m_coasterTexture(coasterTexture) {}
 
 /***********************************************************
  *  Render()
@@ -22,12 +23,9 @@ void Coaster::Render(glm::vec3 position, float scale, float xRotation, float yRo
     // build rotation matrix for transforming offsets and the handle
 	glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    // coaster_wood texture at slot 0
     m_pShaderManager->setIntValue("bUseTexture", true);
-    m_pShaderManager->setSampler2DValue("objectTexture", 0);
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.7f, 0.65f, 0.6f));
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.02f, 0.02f, 0.02f));
-    m_pShaderManager->setFloatValue("material.shininess", 2.0f);
+    m_pShaderManager->setSampler2DValue("objectTexture", m_coasterTexture);
+    SetShaderMaterial(MAT_COASTER);
 
     // --- flat base sides --- tiled UV to avoid stretching on the thin sides, no offset
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(8.0f, 0.3f));

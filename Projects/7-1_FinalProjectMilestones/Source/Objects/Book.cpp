@@ -7,8 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Book::Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSlot, glm::vec2 uvScale)
-    : SceneObject(shaderManager, meshes), m_coverTextureSlot(coverTextureSlot), m_uvScale(uvScale){}
+Book::Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSlot, int pageTextureSlot, glm::vec2 uvScale)
+    : SceneObject(shaderManager, meshes), m_coverTextureSlot(coverTextureSlot), m_pageTextureSlot(pageTextureSlot), m_uvScale(uvScale){}
 
 /***********************************************************
  *  Render()
@@ -20,10 +20,8 @@ Book::Book(ShaderManager* shaderManager, ShapeMeshes* meshes, int coverTextureSl
 void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotation, float zRotation) {
     glm::mat4 rotation = BuildRotationMatrix(xRotation, yRotation, zRotation);
 
-    m_pShaderManager->setVec3Value("material.specularColor", glm::vec3(0.05f, 0.05f, 0.05f));
-    m_pShaderManager->setFloatValue("material.shininess", 4.0f);
-
     // --- front cover --- uses passed in cover texture slot
+    SetShaderMaterial(MAT_BOOK_COVER);
     m_pShaderManager->setIntValue("bUseTexture", true);
     m_pShaderManager->setSampler2DValue("objectTexture", m_coverTextureSlot);
     m_pShaderManager->setVec2Value("UVscale", m_uvScale);
@@ -34,17 +32,17 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
         xRotation, yRotation, zRotation, position + frontCoverOffset);
     m_basicMeshes->DrawBoxMesh();
 
-    // --- back cover --- same texture as front cover
+    // --- back cover --- same texture and material as front cover
     // offset -0.25 down to sit below the pages
     glm::vec3 backCoverOffset = ScaledOffset(rotation, scale, 0.0f, -0.25f, 0.0f);
     SetTransformations(glm::vec3(2.0f * scale, 0.05f * scale, 3.0f * scale),
         xRotation, yRotation, zRotation, position + backCoverOffset);
     m_basicMeshes->DrawBoxMesh();
 
-    // --- pages --- flat color, slightly smaller than covers
-    m_pShaderManager->setSampler2DValue("objectTexture", 9);
+    // --- pages --- slightly smaller than covers, own material and texture
+    SetShaderMaterial(MAT_BOOK_PAGES);
+    m_pShaderManager->setSampler2DValue("objectTexture", m_pageTextureSlot);
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(0.3f, 0.8f));
-    m_pShaderManager->setVec3Value("material.diffuseColor", glm::vec3(0.95f, 0.92f, 0.85f));
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.95f, 0.92f, 0.85f, 1.0f));
 
     // no offset, centered between the two covers
@@ -52,7 +50,8 @@ void Book::Render(glm::vec3 position, float scale, float xRotation, float yRotat
         xRotation, yRotation, zRotation, position);
     m_basicMeshes->DrawBoxMesh();
 
-    // --- spine --- thin box on the left side connecting covers
+    // --- spine --- thin box on the left side connecting covers, same material as cover
+    SetShaderMaterial(MAT_BOOK_COVER);
     m_pShaderManager->setSampler2DValue("objectTexture", m_coverTextureSlot);
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(0.5f, 1.0f));
 
