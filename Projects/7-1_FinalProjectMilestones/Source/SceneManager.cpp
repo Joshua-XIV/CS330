@@ -472,11 +472,13 @@ void SceneManager::PrepareScene()
 	m_basicMeshes->LoadCylinderMesh();
 	m_basicMeshes->LoadTorusMesh();
 	m_basicMeshes->LoadBoxMesh();
+	m_basicMeshes->LoadPrismMesh();
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes);
 	m_table = new Table(m_pShaderManager, m_basicMeshes);
 	m_book = new Book(m_pShaderManager, m_basicMeshes);
 	m_laptop = new Laptop(m_pShaderManager, m_basicMeshes);
+	m_centerPiece = new Centerpiece(m_pShaderManager, m_basicMeshes);
 }
 
 /***********************************************************
@@ -489,9 +491,10 @@ void SceneManager::RenderScene()
 {
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
 
+	m_table->Render();
+	m_centerPiece->Render(glm::vec3(0.0f, 5.24f, 0.0f));
 	m_mug->Render(glm::vec3(1.4f, 5.4f, 2.8f), 0.8f, 0.0f, 165.0f);
 	m_coaster->Render(glm::vec3(1.4f, 5.24f, 2.8f), 1.12f);
-	m_table->Render();
 	m_laptop->Render(glm::vec3(-1.9f, 5.32f, 3.75f), 0.95f, 0.0f, -25.0f, 0.0f);
 
 	// setting texture onto book object before rendering

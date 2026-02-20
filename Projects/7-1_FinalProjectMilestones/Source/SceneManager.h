@@ -16,6 +16,7 @@
 #include "Objects/Table.h"
 #include "Objects/Book.h"
 #include "Objects/Laptop.h"
+#include "Objects/Centerpiece.h"
 
 #include <string>
 #include <vector>
@@ -69,6 +70,8 @@ private:
 	Book* m_book;
 	// pointer to laptop object
 	Laptop* m_laptop;
+	// pointer to center vase object
+	Centerpiece* m_centerPiece;
 
 	// load texture images and convert to OpenGL texture data
 	bool CreateGLTexture(const char* filename, std::string tag);
