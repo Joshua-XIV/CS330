@@ -28,7 +28,7 @@ void Coaster::Render(glm::vec3 position, float scale, float xRotation, float yRo
     SetShaderMaterial(MAT_COASTER);
 
     // --- flat base sides --- tiled UV to avoid stretching on the thin sides, no offset
-    m_pShaderManager->setVec2Value("UVscale", glm::vec2(8.0f, 0.3f));
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(8.0f, 0.1f));
     SetTransformations(glm::vec3(0.7f * scale, 0.1f * scale, 0.7f * scale),
         xRotation, yRotation, zRotation, position);
     m_basicMeshes->DrawCylinderMesh(false, false, true);
@@ -47,8 +47,8 @@ void Coaster::Render(glm::vec3 position, float scale, float xRotation, float yRo
     glm::mat4 ringRotation = rotation * ringBaseRot;
 
     // offset 0.1 up to sit on top of the base cylinder
-    glm::vec3 ringOffset = ScaledOffset(rotation, scale, 0.0f, 0.1f, 0.0f);
-    SetTransformations(glm::vec3(0.58f * scale, 0.58f * scale, 0.35f * scale),
+    glm::vec3 ringOffset = ScaledOffset(rotation, scale, 0.0f, 0.05f, 0.0f);
+    SetTransformations(glm::vec3(0.58f * scale, 0.58f * scale, 0.5f * scale),
         ringRotation, position + ringOffset);
     m_basicMeshes->DrawTorusMesh();
 }
