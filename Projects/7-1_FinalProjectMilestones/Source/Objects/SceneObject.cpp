@@ -5,12 +5,12 @@
 // defined here so all derived classes have access without
 // repeating the same magic values in each object's source file.
 const SceneObject::ShaderMaterial SceneObject::MAT_SILVER = { glm::vec3(0.76f, 0.76f, 0.76f), glm::vec3(0.4f,  0.4f,  0.4f),   32.0f };
-const SceneObject::ShaderMaterial SceneObject::MAT_SCREEN = { glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_SCREEN = { glm::vec3(0.02f, 0.02f, 0.02f), glm::vec3(1.0f, 1.0f, 1.0f), 512.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_DECK_OUTLINE = { glm::vec3(0.15f, 0.15f, 0.15f), glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_DARK_KEY = { glm::vec3(0.2f,  0.2f,  0.2f),  glm::vec3(0.1f,  0.1f,  0.1f),   8.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_CENTERPIECE_BASE = { glm::vec3(0.15f, 0.15f, 0.18f), glm::vec3(1.0f, 1.0f, 1.0f), 32.0f };
-const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_BODY = { glm::vec3(0.05f, 0.08f, 0.1f),  glm::vec3(0.5f, 0.5f, 0.5f), 128.0f };
-const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_INNER = { glm::vec3(0.02f, 0.04f, 0.05f), glm::vec3(0.5f, 0.5f, 0.5f), 256.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_BODY = { glm::vec3(1.0f, 1.0f, 1.0f),  glm::vec3(0.9f, 0.9f, 0.9f), 156.0f };
+const SceneObject::ShaderMaterial SceneObject::MAT_CRYSTAL_INNER = { glm::vec3(0.5f, 0.8f, 0.05f), glm::vec3(0.9f, 0.9f, 0.9f), 256.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_WOOD = { glm::vec3(0.35f, 0.22f, 0.1f),  glm::vec3(0.1f,  0.08f, 0.05f),  16.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_TEAL = { glm::vec3(0.4f,  0.55f, 0.5f),  glm::vec3(0.05f, 0.05f, 0.05f),  4.0f };
 const SceneObject::ShaderMaterial SceneObject::MAT_BROWN = { glm::vec3(0.545f,0.271f,0.075f),glm::vec3(0.545f,0.271f,0.075f), 4.0f };
