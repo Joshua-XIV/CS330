@@ -454,6 +454,46 @@ void SceneManager::LoadSceneTextures()
 /*** for assistance.                                        ***/
 /**************************************************************/
 
+/***********************************************************
+ *  SetupSceneLights()
+ *
+ *  This method is called to add and configure the light
+ *  sources for the 3D scene.  There are up to 4 light sources.
+ ***********************************************************/
+void SceneManager::SetupSceneLights()
+{
+	// this line of code is NEEDED for telling the shaders to render 
+	// the 3D scene with custom lighting - to use the default rendered 
+	// lighting then comment out the following line
+	m_pShaderManager->setBoolValue("bUseLighting", true);
+
+	// directional light - simulates light coming from above
+	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
+	m_pShaderManager->setVec3Value("directionalLight.direction", -0.2f, -1.0f, -0.3f);
+	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.15f, 0.15f, 0.15f);
+	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.6f, 0.6f, 0.6f);
+	m_pShaderManager->setVec3Value("directionalLight.specular", 0.4f, 0.4f, 0.4f);
+
+	// point light - above and slightly in front of the scene
+	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
+	m_pShaderManager->setVec3Value("pointLights[0].position", 0.0f, 10.0f, 5.0f);
+	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
+
+	m_pShaderManager->setBoolValue("spotLight.bActive", true);
+	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 9.0f, 0.0f);
+	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, 0.0f);
+	m_pShaderManager->setVec3Value("spotLight.ambient", 0.8f, 0.8f, 0.8f);
+	m_pShaderManager->setVec3Value("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+	m_pShaderManager->setVec3Value("spotLight.specular", 1.0f, 1.0f, 1.0f);
+	m_pShaderManager->setFloatValue("spotLight.constant", 1.0f);
+	m_pShaderManager->setFloatValue("spotLight.linear", 0.09f);
+	m_pShaderManager->setFloatValue("spotLight.quadratic", 0.032f);
+	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(60.f)));
+	m_pShaderManager->setFloatValue("spotLight.outerCutOff", glm::cos(glm::radians(120.0f)));
+
+}
 
 /***********************************************************
  *  PrepareScene()
@@ -468,6 +508,8 @@ void SceneManager::PrepareScene()
 	// loaded in memory no matter how many times it is drawn
 	// in the rendered 3D scene
 	LoadSceneTextures();
+	// add and define the light sources for the scene
+	SetupSceneLights();
 	m_basicMeshes->LoadPlaneMesh();
 	m_basicMeshes->LoadCylinderMesh();
 	m_basicMeshes->LoadTorusMesh();

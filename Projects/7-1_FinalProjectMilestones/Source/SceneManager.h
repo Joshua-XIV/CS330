@@ -123,6 +123,9 @@ public:
 	// load all of the needed textures before rendering
 	void LoadSceneTextures();
 
+	// add and define the light sources before rendering
+	void SetupSceneLights();
+
 	// render the wood floor
 	void RenderFloor();
 
