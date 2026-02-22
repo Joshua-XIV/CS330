@@ -45,7 +45,7 @@ void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float
 
     // --- inner highlight --- slightly smaller prism inside main body
     SetShaderMaterial(MAT_CRYSTAL_INNER);
-    m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.5f, 0.7f, 0.75f, 0.2f));
+    m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.5f, 0.7f, 0.75f, 0.5f));
 
     // same offset as prism body, slightly smaller scale
     SetTransformations(glm::vec3(0.36f * scale, 1.36f * scale, 0.36f * scale),
