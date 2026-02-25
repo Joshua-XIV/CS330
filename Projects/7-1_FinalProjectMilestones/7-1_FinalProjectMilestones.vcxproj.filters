@@ -45,9 +45,15 @@
     <ClCompile Include="Source\Objects\SceneObject.cpp">
       <Filter>Source Files\Custom Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objects\Book.cpp" />
-    <ClCompile Include="Source\Objects\Laptop.cpp" />
-    <ClCompile Include="Source\Objects\Centerpiece.cpp" />
+    <ClCompile Include="Source\Objects\Book.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Centerpiece.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Laptop.cpp">
+      <Filter>Source Files\Custom Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\SceneManager.h">
@@ -68,8 +74,14 @@
     <ClInclude Include="Source\Objects\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Objects\Book.h" />
-    <ClInclude Include="Source\Objects\Laptop.h" />
-    <ClInclude Include="Source\Objects\Centerpiece.h" />
+    <ClInclude Include="Source\Objects\Centerpiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Book.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Laptop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
