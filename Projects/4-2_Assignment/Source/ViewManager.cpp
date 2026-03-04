@@ -171,7 +171,9 @@ void ViewManager::Mouse_Scroll_Callback(GLFWwindow* window, double xOffset, doub
  *  ProcessKeyboardEvents()
  *
  *  This method is called to process any keyboard events
- *  that may be waiting in the event queue.
+ *  that may be waiting in the event queue. WASD keys control
+ *  camera movement, QE keys control vertical movement, and
+ *  arrow keys control camera orientation.
  ***********************************************************/
 void ViewManager::ProcessKeyboardEvents()
 {
@@ -187,7 +189,8 @@ void ViewManager::ProcessKeyboardEvents()
 		return;
 	}
 
-	// process camera zooming in and out
+	// W moves the camera forward (zoom in), S moves it backward (zoom out)
+	// gDeltaTime ensures movement speed is consistent regardless of frame rate
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(FORWARD, gDeltaTime);
@@ -197,7 +200,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(BACKWARD, gDeltaTime);
 	}
 
-	// process camera panning left and right
+	// A pans the camera left, D pans it right
+	// Panning moves the camera along its local X axis without changing look direction
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(LEFT, gDeltaTime);
@@ -207,7 +211,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
 	}
 
-	// process camera movement up and down
+	// Q moves the camera upward along the Y axis, E moves it downward
+	// This allows vertical adjustment of the viewpoint independent of look direction
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
@@ -217,7 +222,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
 	}
 
-	// process camera looking left and right
+	// arrow keys rotate the camera orientation using mouse movement offsets
+	// a fixed offset value of 50.0f is used to produce a noticeable rotation per frame
 	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(-50.0f, 0.0f);
@@ -227,7 +233,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessMouseMovement(50.0f, 0.0f);
 	}
 
-	// process camera looking up and down
+	// positive Y offset looks up, negative Y offset looks down
 	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(0.0f, 50.0f);
@@ -237,7 +243,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
 	}
 
-	// change between different projection views
+	// key 1 switches to orthographic projection from the front
 	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
 	{
 		// change to a multi-view orthographic projection
@@ -248,6 +254,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
 	}
+
+	// key 2 switches to orthographic projection from the side
 	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
 	{
 		// change to a multi-view orthographic projection
@@ -258,6 +266,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(-1.0f, 0.0f, 0.0f);
 	}
+
+	// key 3 switches to orthographic projection from the top
 	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
 	{
 		// change to a multi-view orthographic projection
@@ -268,6 +278,8 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
 	}
+
+	// key 4 restores the default perspective projection and resets camera position
 	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
 	{
 		// change to perspective projection
