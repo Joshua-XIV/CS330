@@ -165,7 +165,8 @@ void SceneManager::RenderScene()
 	// set the XYZ rotation for the mesh
 	/***********************************************************
 	 *  After multiple trial and errors, final adjustments to x rotation
-	 *	was 170 degrees to be in line with the camera and match the image
+	 *	was 180 degrees to be directly above the other pyramid and have
+	 *  the tip of this pyramid touch the other pyramid's tip
 	 ***********************************************************/
 	XrotationDegrees = 180.0f;
 	YrotationDegrees = 0.0f;
@@ -174,7 +175,7 @@ void SceneManager::RenderScene()
 	// set the XYZ position for the mesh
 	/***********************************************************
 	 *  Also adjusted the mesh's y position to move up one
-	 *	and a tiny bit to add a small gap to match the image.
+	 *  in order to be above the bottom pyramid and not overlap
 	 ***********************************************************/
 	positionXYZ = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -186,6 +187,7 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
+	// sets the top pyramid color to white
 	SetShaderColor(1, 1, 1, 1);
 
 	// draw the mesh with transformation values
@@ -201,8 +203,8 @@ void SceneManager::RenderScene()
 
 	// set the XYZ rotation for the mesh
 	/***********************************************************
-	 *  After multiple trial and errors, final adjustments to x rotation
-	 *	was -30 degrees to be in line with the camera and match the image
+	 * No rotations were made as this is the bottom pyramid
+	 * with its tip going up as normal
 	 ***********************************************************/
 	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
@@ -219,6 +221,7 @@ void SceneManager::RenderScene()
 		ZrotationDegrees,
 		positionXYZ);
 
+	// sets the bottom pyramid color to white
 	SetShaderColor(1, 1, 1, 1);
 
 	// draw the mesh with transformation values
