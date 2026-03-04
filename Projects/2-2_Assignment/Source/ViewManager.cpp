@@ -53,8 +53,8 @@ ViewManager::ViewManager(
 	g_pCamera = new Camera();
 	// default camera view parameters
 	g_pCamera->Position = glm::vec3(0.0f, 0.5f, 4.0f);
-	g_pCamera->Front = glm::vec3(0.0f, 0.5f, -1.0f);
-	g_pCamera->Up = glm::vec3(0.0f, 0.0f, 0.0f);
+	g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
+	g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 	g_pCamera->Zoom = 80;
 	g_pCamera->MovementSpeed = 20;
 }
@@ -231,7 +231,7 @@ void ViewManager::PrepareSceneView()
 	*	was used to set to a nice starting position for the camera
 	*	but changes the window title to do so, commented out before
 	*	submitting assignment
-	*
+	*/
 	if (NULL != m_pShaderManager && NULL != g_pCamera)
 	{
 		std::string title = "Camera - Pos: (" +
@@ -241,9 +241,12 @@ void ViewManager::PrepareSceneView()
 			std::to_string(g_pCamera->Front.x) + ", " +
 			std::to_string(g_pCamera->Front.y) + ", " +
 			std::to_string(g_pCamera->Front.z) + ") | Zoom: " +
-			std::to_string(g_pCamera->Zoom);
+			std::to_string(g_pCamera->Zoom) + "| Up: " +
+			std::to_string(g_pCamera->Up.x) + ", " +
+			std::to_string(g_pCamera->Up.y) + ", " +
+			std::to_string(g_pCamera->Up.z);
 
 		glfwSetWindowTitle(m_pWindow, title.c_str());
 	}
-	*/
+	
 }
