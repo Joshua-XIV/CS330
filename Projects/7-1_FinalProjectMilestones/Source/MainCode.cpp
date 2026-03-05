@@ -85,6 +85,27 @@ int main(int argc, char* argv[])
 	g_SceneManager = new SceneManager(g_ShaderManager);
 	g_SceneManager->PrepareScene();
 
+	// display all the camera controls
+	std::cout << "Controls:\n";
+	std::cout << "  W/S        - Move forward/backward\n";
+	std::cout << "  A/D        - Move left/right\n";
+	std::cout << "  Q/E        - Move up/down\n";
+	std::cout << "  Mouse      - Look around\n";
+	std::cout << "  Arrow Keys - Look around\n";
+	std::cout << "  Scroll     - Adjust movement speed\n";
+	std::cout << "  1          - Orthographic front view\n";
+	std::cout << "  2          - Orthographic left view\n";
+	std::cout << "  3          - Orthographic back view\n";
+	std::cout << "  4          - Orthographic right view\n";
+	std::cout << "  5          - Orthographic top view\n";
+	std::cout << "  6          - Perspective front view\n";
+	std::cout << "  7          - Perspective front-left view\n";
+	std::cout << "  8          - Perspective front-right view\n";
+	std::cout << "  9          - Perspective back view\n";
+	std::cout << "  P          - Cycle perspective views\n";
+	std::cout << "  O          - Cycle orthographic views\n";
+	std::cout << "  ESC        - Exit\n" << std::endl;
+
 	// loop will keep running until the application is closed 
 	// or until an error has occurred
 	while (!glfwWindowShouldClose(g_Window))
@@ -181,20 +202,6 @@ bool InitializeGLEW()
 	// Displays a successful OpenGL initialization message
 	std::cout << "INFO: OpenGL Successfully Initialized\n";
 	std::cout << "INFO: OpenGL Version: " << glGetString(GL_VERSION) << "\n" << std::endl;
-
-	std::cout << "Controls:\n";
-	std::cout << "  W/S        - Move forward/backward\n";
-	std::cout << "  A/D        - Move left/right\n";
-	std::cout << "  Q/E        - Move up/down\n";
-	std::cout << "  Mouse      - Look around\n";
-	std::cout << "  Scroll     - Adjust movement speed\n";
-	std::cout << "  P          - Perspective view\n";
-	std::cout << "  O          - Orthographic side view\n";
-	std::cout << "  1          - Orthographic front view\n";
-	std::cout << "  2          - Orthographic side view\n";
-	std::cout << "  3          - Orthographic top view\n";
-	std::cout << "  4          - Perspective view\n";
-	std::cout << "  ESC        - Exit\n" << std::endl;
 
 	return(true);
 }

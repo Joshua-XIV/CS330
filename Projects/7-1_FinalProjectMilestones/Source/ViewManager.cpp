@@ -174,14 +174,42 @@ void ViewManager::Mouse_Scroll_Callback(GLFWwindow* window, double xOffset, doub
 /***********************************************************
  *  ProcessKeyboardEvents()
  *
- *  This method is called to process any keyboard events
- *  that may be waiting in the event queue.
+ *  This method is called each frame to process any keyboard
+ *  events waiting in the event queue. Handles camera movement,
+ *  looking direction, and switching between projection modes.
+ *
+ *  Movement Controls:
+ *    W/S        - move camera forward/backward
+ *    A/D        - pan camera left/right
+ *    Q/E        - move camera up/down
+ *    Arrow Keys - look left/right/up/down
+ *    Mouse      - free look
+ *
+ *  Preset Views (direct):
+ *    1          - orthographic front view
+ *    2          - orthographic left side view
+ *    3          - orthographic back view
+ *    4          - orthographic right side view
+ *    5          - orthographic top view
+ *    6          - perspective front view
+ *    7          - perspective front-left view
+ *    8          - perspective front-right view
+ *    9          - perspective back view
+ *
+ *  Cycling Controls:
+ *    P          - cycle through perspective presets (4 views)
+ *    O          - cycle through orthographic presets (5 views)
+ *
+ *    ESC        - close the window
  ***********************************************************/
 void ViewManager::ProcessKeyboardEvents()
 {
-	// static variables for view cycling
+	// track previous press state for P and O to prevent
+	// holding the key from firing multiple times per press
 	static bool pWasPressed = false;
 	static bool oWasPressed = false;
+
+	// track which preset index we are on for each cycle group
 	static int perspIndex = 0;
 	static int orthoIndex = 0;
 
@@ -197,7 +225,7 @@ void ViewManager::ProcessKeyboardEvents()
 		return;
 	}
 
-	// process camera zooming in and out
+	// W/S - move the camera forward and backward along its front vector
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(FORWARD, gDeltaTime);
@@ -207,7 +235,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(BACKWARD, gDeltaTime);
 	}
 
-	// process camera panning left and right
+	// A/D - pan the camera left and right along its right vector
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(LEFT, gDeltaTime);
@@ -217,7 +245,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
 	}
 
-	// process camera movement up and down
+	// Q/E - move the camera vertically up and down
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
@@ -227,7 +255,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
 	}
 
-	// process camera looking left and right
+	// Arrow Left/Right - rotate the camera's yaw left and right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(-50.0f, 0.0f);
@@ -237,7 +265,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessMouseMovement(50.0f, 0.0f);
 	}
 
-	// process camera looking up and down
+	// Arrow Up/Down - rotate the camera's pitch up and down
 	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(0.0f, 50.0f);
@@ -247,7 +275,9 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
 	}
 
-	// helper lambda for setting camera view
+	// helper lambda to set camera position, front vector, up vector,
+	// and recalculate pitch/yaw so free-look stays consistent after
+	// snapping to a preset view
 	auto SetCameraView = [](glm::vec3 position, glm::vec3 front, glm::vec3 up) {
 		g_pCamera->Position = position;
 		g_pCamera->Front = front;
@@ -255,60 +285,60 @@ void ViewManager::ProcessKeyboardEvents()
 		glm::vec3 f = glm::normalize(front);
 		g_pCamera->Pitch = glm::degrees(asin(f.y));
 		g_pCamera->Yaw = glm::degrees(atan2(f.z, f.x));
-	};
+		};
 
-	// 1 - front orthographic view
+	// 1 - orthographic front view, looking straight down the -Z axis
 	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
 		SetCameraView(glm::vec3(0.0f, 7.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	// 2 - left side orthographic view
+	// 2 - orthographic left side view, looking in the +X direction
 	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
 		SetCameraView(glm::vec3(-10.0f, 7.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	// 3 - back orthographic view
+	// 3 - orthographic back view, looking in the +Z direction
 	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
 		SetCameraView(glm::vec3(0.0f, 7.0f, -10.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	// 4 - right side orthographic view
+	// 4 - orthographic right side view, looking in the -X direction
 	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
 		SetCameraView(glm::vec3(10.0f, 7.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	// 5 - top orthographic view
+	// 5 - orthographic top view, looking straight down the -Y axis
 	if (glfwGetKey(m_pWindow, GLFW_KEY_5) == GLFW_PRESS)
 	{
 		bOrthographicProjection = true;
 		SetCameraView(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
 	}
-	// 6 - perspective view
+	// 6 - perspective view from the front at a slight downward angle
 	if (glfwGetKey(m_pWindow, GLFW_KEY_6) == GLFW_PRESS)
 	{
 		bOrthographicProjection = false;
 		SetCameraView(glm::vec3(0.0f, 8.5f, 8.0f), glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		g_pCamera->Zoom = 80;
 	}
-	// 7 - perspective front left view
+	// 7 - perspective view from the front-left diagonal
 	if (glfwGetKey(m_pWindow, GLFW_KEY_7) == GLFW_PRESS)
 	{
 		bOrthographicProjection = false;
 		SetCameraView(glm::vec3(-6.0f, 8.5f, 6.0f), glm::vec3(0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
 		g_pCamera->Zoom = 80;
 	}
-	// 8 - perspective front right view
+	// 8 - perspective view from the front-right diagonal
 	if (glfwGetKey(m_pWindow, GLFW_KEY_8) == GLFW_PRESS)
 	{
 		bOrthographicProjection = false;
 		SetCameraView(glm::vec3(6.0f, 8.5f, 6.0f), glm::vec3(-0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
 		g_pCamera->Zoom = 80;
 	}
-	// 9 - perspective back view
+	// 9 - perspective view from behind the scene
 	if (glfwGetKey(m_pWindow, GLFW_KEY_9) == GLFW_PRESS)
 	{
 		bOrthographicProjection = false;
@@ -316,7 +346,7 @@ void ViewManager::ProcessKeyboardEvents()
 		g_pCamera->Zoom = 80;
 	}
 
-	// P - cycle through perspective views
+	// P - cycle forward through the 4 perspective preset views one press at a time
 	if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_PRESS)
 	{
 		if (!pWasPressed)
@@ -324,13 +354,13 @@ void ViewManager::ProcessKeyboardEvents()
 			bOrthographicProjection = false;
 			perspIndex = (perspIndex + 1) % 4;
 
-			if (perspIndex == 0)
+			if (perspIndex == 0)      // front
 				SetCameraView(glm::vec3(0.0f, 8.5f, 8.0f), glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (perspIndex == 1)
+			else if (perspIndex == 1) // front-left
 				SetCameraView(glm::vec3(-6.0f, 8.5f, 6.0f), glm::vec3(0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (perspIndex == 2)
+			else if (perspIndex == 2) // front-right
 				SetCameraView(glm::vec3(6.0f, 8.5f, 6.0f), glm::vec3(-0.6f, -0.6f, -0.6f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (perspIndex == 3)
+			else if (perspIndex == 3) // back
 				SetCameraView(glm::vec3(0.0f, 8.5f, -8.0f), glm::vec3(0.0f, -0.5f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 			g_pCamera->Zoom = 80;
@@ -339,10 +369,11 @@ void ViewManager::ProcessKeyboardEvents()
 	}
 	else if (glfwGetKey(m_pWindow, GLFW_KEY_P) == GLFW_RELEASE)
 	{
+		// reset flag when key is released so next press registers as a new event
 		pWasPressed = false;
 	}
 
-	// O - cycle through orthographic views
+	// O - cycle forward through the 5 orthographic preset views one press at a time
 	if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_PRESS)
 	{
 		if (!oWasPressed)
@@ -350,15 +381,15 @@ void ViewManager::ProcessKeyboardEvents()
 			bOrthographicProjection = true;
 			orthoIndex = (orthoIndex + 1) % 5;
 
-			if (orthoIndex == 0)
+			if (orthoIndex == 0)      // front
 				SetCameraView(glm::vec3(0.0f, 7.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (orthoIndex == 1)
+			else if (orthoIndex == 1) // left side
 				SetCameraView(glm::vec3(-10.0f, 7.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (orthoIndex == 2)
+			else if (orthoIndex == 2) // back
 				SetCameraView(glm::vec3(0.0f, 7.0f, -10.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			else if (orthoIndex == 3)
+			else if (orthoIndex == 3) // top
 				SetCameraView(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
-			else if (orthoIndex == 4)
+			else if (orthoIndex == 4) // right side
 				SetCameraView(glm::vec3(10.0f, 7.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 			oWasPressed = true;
@@ -366,6 +397,7 @@ void ViewManager::ProcessKeyboardEvents()
 	}
 	else if (glfwGetKey(m_pWindow, GLFW_KEY_O) == GLFW_RELEASE)
 	{
+		// reset flag when key is released so next press registers as a new event
 		oWasPressed = false;
 	}
 }

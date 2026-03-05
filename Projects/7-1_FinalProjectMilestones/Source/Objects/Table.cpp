@@ -28,6 +28,7 @@ void Table::Render(glm::vec3 position, float scale, float xRotation, float yRota
     m_pShaderManager->setSampler2DValue("objectTexture", m_woodLegTexture);
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
 
+    // scales and offsets for the table legs
     float SLANT_LEG_Y_SCALE = 2.5f;
     float SLANT_LEG_X_OFFSET = 0.7f;        // horizontal distance from center
     float BOTTOM_SLANT_LEG_Y_OFFSET = 1.0f; // vertical start of bottom legs

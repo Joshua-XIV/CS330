@@ -492,7 +492,6 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setFloatValue("spotLight.quadratic", 0.032f);
 	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(60.f)));
 	m_pShaderManager->setFloatValue("spotLight.outerCutOff", glm::cos(glm::radians(120.0f)));
-
 }
 
 /***********************************************************
@@ -531,34 +530,45 @@ void SceneManager::PrepareScene()
  ***********************************************************/
 void SceneManager::RenderScene()
 {
+	// set a default base color before rendering individual objects
 	SetShaderColor(0.8f, 0.6f, 0.4f, 1.0f);
+
+	// render the table centered at the world origin
 	m_table->Render();
+
+	// render the vase above the table's center
 	m_centerPiece->Render(glm::vec3(0.0f, 5.24f, 0.0f));
+
+	// render the mug on top of the table surface, rotated 165 degrees on Y
 	m_mug->Render(glm::vec3(1.4f, 5.4f, 2.8f), 0.8f, 0.0f, 165.0f);
 
-	// redner coaster and laptop
+	// render the coaster directly beneath the mug at the table surface height
 	m_coaster->Render(glm::vec3(1.4f, 5.24f, 2.8f), 1.12f);
+
+	// render the laptop on top of the table's surface and placemat, rotation -25 degress on Y
 	m_laptop->Render(glm::vec3(-1.9f, 5.32f, 3.75f), 0.95f, 0.0f, -25.0f, 0.0f);
 
-	// set book cover and page textures then render
+	// set book cover and page textures then render on the table
 	m_book->SetPageTexture(FindTextureSlot("pages"));
 	m_book->SetCoverTexture(FindTextureSlot("brown_leather"));
 	m_book->Render(glm::vec3(1.3f, 5.46f, -1.5f), 0.8f, 0.0f, 60.0f, 0.0f);
 
-	// set book cover texture then render
+	// set book cover texture then render above the first book
 	m_book->SetCoverTexture(FindTextureSlot("black_leather"));	// 7 - black leather
 	m_book->Render(glm::vec3(1.3f, 5.87f, -1.5f), 0.65f, 0.0f, 240.0f, 0.0f);
 
-	// set book cover texture and adjust uvscale then render
+	// set book cover texture and adjust uvscale then render above the second book
 	m_book->SetCoverTexture(FindTextureSlot("red_leather")); // 8 - red leather
 	m_book->SetUVScale(0.3f, 0.5f);
 	m_book->Render(glm::vec3(1.3f, 6.19f, -1.5f), 0.5f, 0.0f, 60.0f, 0.0f);
 
-	// render wooden floor and grey carpet
+	// render the wooden floor beneath the table and carpet
 	RenderFloor();
+
+	// render the carpet beneath the table
 	RenderCarpet();
 
-	// render placemats on table
+	// render three place mats at different positions on the table surface
 	RenderPlaceMat(glm::vec3(-1.8f, 5.24f, 3.5f), 1.9f);
 	RenderPlaceMat(glm::vec3(-2.5f, 5.24f, -1.5f), 1.9f);
 	RenderPlaceMat(glm::vec3(3.7f, 5.24f, 0.7f), 1.9f);
@@ -567,7 +577,10 @@ void SceneManager::RenderScene()
 /***********************************************************
  *  RenderFloor()
  *
- *  Renders the floor plane with a dark wood texture.
+ *  Renders the floor of the 3D scene as a large flat plane
+ *  mesh centered at the world origin with a dark wood texture
+ *  applied. The plane is scaled to extend beyond the carpet
+ *  and table area to fill the visible scene background.
  ***********************************************************/
 void SceneManager::RenderFloor()
 {
@@ -577,14 +590,17 @@ void SceneManager::RenderFloor()
 	float ZrotationDegrees = 0.0f;
 	glm::vec3 positionXYZ;
 
+	// scale to cover the full scene background area
 	scaleXYZ = glm::vec3(15.0f, 0.01f, 15.0f);
 
+	// no rotation needed - the plane lies flat by default
 	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
 	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	// apply scale, rotation, and position to the transform method
 	SetTransformations(
 		scaleXYZ,
 		XrotationDegrees,
@@ -592,17 +608,22 @@ void SceneManager::RenderFloor()
 		ZrotationDegrees,
 		positionXYZ);
 
+	// apply the dark wood texture to the floor surface
 	SetShaderTexture("dark_wood");
+	// tile the texture 1.5x in both directions to avoid a single stretched
+	// image across the large plane - tiling creates a more realistic wood floor
 	SetTextureUVScale(1.5f, 1.5f);
 
+	// draw the plane mesh as the floor
 	m_basicMeshes->DrawPlaneMesh();
 }
 
 /***********************************************************
  *  RenderCarpet()
  *
- *  Renders a large cylinder to represent a carpet or rug
- *  sitting on top of the floor.
+ *  Renders the carpet of the 3D scene as a large flat cylinder
+ *  mesh with a carpet texture applied. The carpet is centered
+ *  at the origin and scaled to cover the table area.
  ***********************************************************/
 void SceneManager::RenderCarpet()
 {
@@ -612,14 +633,17 @@ void SceneManager::RenderCarpet()
 	float ZrotationDegrees = 0.0f;
 	glm::vec3 positionXYZ;
 
+	// scale to cover the full table area, near-zero Y keeps the mesh flat
 	scaleXYZ = glm::vec3(10.0f, 0.01f, 10.0f);
 
 	XrotationDegrees = 0.0f;
 	YrotationDegrees = 0.0f;
 	ZrotationDegrees = 0.0f;
 
+	// no rotation needed - the carpet lies flat by default
 	positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	// apply scale, rotation, and position to the transform method
 	SetTransformations(
 		scaleXYZ,
 		XrotationDegrees,
@@ -627,28 +651,32 @@ void SceneManager::RenderCarpet()
 		ZrotationDegrees,
 		positionXYZ);
 
+	// apply the carpet texture to the floor surface
 	SetShaderTexture("carpet");
+	// tile the texture 1.5x in both directions so the carpet fiber pattern
+	// repeats naturally rather than one image being stretched across the surface
 	SetTextureUVScale(1.5f, 1.5f);
 
+	// draw the flat cylinder mesh as the floor
 	m_basicMeshes->DrawCylinderMesh();
 }
 
 /***********************************************************
  *  RenderPlaceMat()
  *
- *  Renders a circular place mat at the given position.
- *  Multiple place mats can be rendered by calling this
- *  method with different positions and scales.
+ *  Renders a circular place mat at the specified position
+ *  using a flat cylinder mesh with a fabric texture applied.
  *
- *  position   - world space position of the place mat
- *  scale      - uniform scale applied to the place mat
- *  xRotation  - rotation in degrees around the X axis
- *  yRotation  - rotation in degrees around the Y axis
- *  zRotation  - rotation in degrees around the Z axis
+ *  position  - the XYZ world position of the place mat
+ *  scale     - uniform scale factor for the mat's radius
+ *  xRotation - rotation in degrees around the X axis (default 0)
+ *  yRotation - rotation in degrees around the Y axis (default 0)
+ *  zRotation - rotation in degrees around the Z axis (default 0)
  ***********************************************************/
 void SceneManager::RenderPlaceMat(glm::vec3 position, float scale,
 	float xRotation, float yRotation, float zRotation)
 {
+	// apply scale uniformly to X and Z to size the mat radius; near-zero Y keeps it flat
 	SetTransformations(
 		glm::vec3(1.0f * scale, 0.01f, 1.0f * scale),
 		xRotation,
@@ -656,8 +684,13 @@ void SceneManager::RenderPlaceMat(glm::vec3 position, float scale,
 		zRotation,
 		position);
 
+	// apply the fabric texture to give the mat a woven surface appearance
 	SetShaderTexture("mat_fabric");
+
+	// compress UV on the X axis to better match place mat proportions
 	SetTextureUVScale(0.5f, 1.0f);
 
+	// draw the flat cylinder mesh as the place mat
 	m_basicMeshes->DrawCylinderMesh();
 }
+
