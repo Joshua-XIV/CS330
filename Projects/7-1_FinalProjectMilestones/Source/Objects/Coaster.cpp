@@ -28,6 +28,9 @@ void Coaster::Render(glm::vec3 position, float scale, float xRotation, float yRo
     SetShaderMaterial(MAT_COASTER);
 
     // --- flat base sides --- tiled UV to avoid stretching on the thin sides, no offset
+    // tile UV 8x horizontally and compress vertically on the cylinder sides
+    // this prevents the wood grain from stretching around the curved rim
+    // and instead repeats it naturally like real wood grain would appear
     m_pShaderManager->setVec2Value("UVscale", glm::vec2(8.0f, 0.1f));
     SetTransformations(glm::vec3(0.7f * scale, 0.1f * scale, 0.7f * scale),
         xRotation, yRotation, zRotation, position);
