@@ -198,35 +198,39 @@ void SceneManager::DefineObjectMaterials()
 	/*** There is no limit to the number of object materials that can ***/
 	/*** be defined. Refer to the code in the OpenGL Sample for help  ***/
 
-	// Default material - soft pink tint
+	// Default material - used for the base plane
+	// Low shininess and soft pink diffuse gives the floor a warm appearance
 	OBJECT_MATERIAL defaultMat;
-	defaultMat.diffuseColor = glm::vec3(1.0f, 0.3f, 0.3f);  // pink
-	defaultMat.specularColor = glm::vec3(0.01f, 0.01f, 0.01f); // low spec
-	defaultMat.shininess = 8.0f;							// low shine
+	defaultMat.diffuseColor = glm::vec3(1.0f, 0.3f, 0.3f);		// pink diffuse color
+	defaultMat.specularColor = glm::vec3(0.01f, 0.01f, 0.01f);  // nearly no specular highlight
+	defaultMat.shininess = 8.0f;								// low shine
 	defaultMat.tag = "default";
 	m_objectMaterials.push_back(defaultMat);
 
-	// Shiny metal material - light gray with strong reflectivity
+	// Shiny metal material - used for the box and sphere on the right pan
+	// High shininess and strong specular simulate a polished metallic surface
 	OBJECT_MATERIAL metalMat;
 	metalMat.diffuseColor = glm::vec3(0.9f, 0.3f, 0.3f);     // redish diffuse
-	metalMat.specularColor = glm::vec3(0.9f, 0.1f, 0.1f);    // bright gray specular
-	metalMat.shininess = 128.0f;                             // very shiny
+	metalMat.specularColor = glm::vec3(0.9f, 0.1f, 0.1f);    // strong red specular highlight
+	metalMat.shininess = 128.0f;                             // very high shine
 	metalMat.tag = "shiny";
 	m_objectMaterials.push_back(metalMat);
 
-	// Plastic material - blue/purple tint with moderate shine
+	// Plastic material - used for the cone on the left pan
+	// Medium shininess with a blue/purple diffuse simulates a smooth plastic object
 	OBJECT_MATERIAL plasticMat;
 	plasticMat.diffuseColor = glm::vec3(0.1f, 0.1f, 1.0f);   // blue/pruple diffuse
 	plasticMat.specularColor = glm::vec3(0.7f, 0.7f, 0.7f);  // neutral gray specular
-	plasticMat.shininess = 32.0f;                            // medium shininess
+	plasticMat.shininess = 32.0f;                            // medium shine
 	plasticMat.tag = "plastic";
 	m_objectMaterials.push_back(plasticMat);
 
-	// Wood material - reddish-brown with minimal shine
+	// Wood material - used for the scale beam and vertical post
+	// Very low shininess and faint specular simulate an unfinished wooden surface
 	OBJECT_MATERIAL woodMat;
 	woodMat.diffuseColor = glm::vec3(0.55f, 0.27f, 0.07f);  // brown diffuse
 	woodMat.specularColor = glm::vec3(0.05f, 0.03f, 0.01f); // very faint specular
-	woodMat.shininess = 4.0f;                               // low shininess
+	woodMat.shininess = 4.0f;                               // low shine
 	woodMat.tag = "wood";
 	m_objectMaterials.push_back(woodMat);
 }
@@ -236,6 +240,11 @@ void SceneManager::DefineObjectMaterials()
  *
  *  This method is called to add and configure the light
  *  sources for the 3D scene.  There are up to 4 light sources.
+ * 
+ *  This scene uses the following light setup:
+ *    - 1 directional light  (simulates distant ambient light)
+ *    - 3 point lights       (colored fills from different angles)
+ *    - 1 spotlight          (focused overhead light on scene center)
  ***********************************************************/
 void SceneManager::SetupSceneLights()
 {
@@ -249,15 +258,23 @@ void SceneManager::SetupSceneLights()
 	/*** Up to four light sources can be defined. Refer to the code ***/
 	/*** in the OpenGL Sample for help                              ***/
 
-	// Set up a directional light
+	// -------------------------------------------------------
+	// DIRECTIONAL LIGHT
+	// Simulates a distant light source kinda like the sun.
+	// Casts even light across the entire scene from
+	// the front-right above with low intensity
+	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
 	m_pShaderManager->setVec3Value("directionalLight.direction", 1.0f, -0.5f, 1.0f);
 	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.05f, 0.05f, 0.05f);
 	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.5f, 0.5f, 0.5f);
 	m_pShaderManager->setVec3Value("directionalLight.specular", 0.5f, 0.5f, 0.5f);
 
-	// Set up point lights
-	// Light 0 - front right, pink tint
+	// -------------------------------------------------------
+	// POINT LIGHT 0 - Warm Pink/Red Key Light (Front Right)
+	// Positioned front-right and above the scene to act as
+	// the primary colored key light. 
+	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[0].position", 5.0f, 8.0f, 8.0f);
 	m_pShaderManager->setFloatValue("pointLights[0].constant", 0.5f);
@@ -267,7 +284,11 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 0.7f, 0.2f, 0.3f);
 	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.8f, 0.2f, 0.6f);
 
-	// Light 1 - front left, blue/purple ish glow
+	// -------------------------------------------------------
+	// POINT LIGHT 1 - Blue/Purple Fill Light (Front Left)
+	// Positioned front-left to provide some contrast with
+	// light 0.
+	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[1].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[1].position", -4.0f, 6.0f, 7.0f);
 	m_pShaderManager->setFloatValue("pointLights[1].constant", 1.0f);
@@ -277,7 +298,11 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setVec3Value("pointLights[1].diffuse", 0.2f, 0.1f, 0.5f);
 	m_pShaderManager->setVec3Value("pointLights[1].specular", 0.3f, 0.1f, 0.8f);
 
-	// Light 2 - back
+	// -------------------------------------------------------
+	// POINT LIGHT 2 - Subtle Back Fill Light (Behind Scene)
+	// Low intensity light placed behind the scene to prevent
+	// the backs of objects from going completely dark.
+	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[2].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[2].position", 0.0f, 5.0f, -5.0f);
 	m_pShaderManager->setFloatValue("pointLights[2].constant", 1.0f);
@@ -287,7 +312,11 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setVec3Value("pointLights[2].diffuse", 0.1f, 0.1f, 0.1f);
 	m_pShaderManager->setVec3Value("pointLights[2].specular", 0.2f, 0.2f, 0.4f);
 
-	// Spotlight in the middle of the scene
+	// -------------------------------------------------------
+	// SPOTLIGHT - Overhead Center Light
+	// Positioned directly above the center of the scene,
+	// aimed mostly downward with a slight forward tilt.
+	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("spotLight.bActive", true);
 	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 10.0f, 1.5f);    // directly above scene center
 	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, -0.05f);   // mostly down, slight forward tilt
