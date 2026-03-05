@@ -219,7 +219,7 @@ void SceneManager::DefineObjectMaterials()
 	// Plastic material - used for the cone on the left pan
 	// Medium shininess with a blue/purple diffuse simulates a smooth plastic object
 	OBJECT_MATERIAL plasticMat;
-	plasticMat.diffuseColor = glm::vec3(0.1f, 0.1f, 1.0f);   // blue/pruple diffuse
+	plasticMat.diffuseColor = glm::vec3(0.1f, 0.1f, 1.0f);   // blue/purple diffuse
 	plasticMat.specularColor = glm::vec3(0.7f, 0.7f, 0.7f);  // neutral gray specular
 	plasticMat.shininess = 32.0f;                            // medium shine
 	plasticMat.tag = "plastic";
@@ -265,7 +265,7 @@ void SceneManager::SetupSceneLights()
 	// the front-right above with low intensity
 	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
-	m_pShaderManager->setVec3Value("directionalLight.direction", 1.0f, -0.5f, 1.0f);
+	m_pShaderManager->setVec3Value("directionalLight.direction", 1.0f, -0.5f, 1.0f);	// angle from front-right above
 	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.05f, 0.05f, 0.05f);
 	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.5f, 0.5f, 0.5f);
 	m_pShaderManager->setVec3Value("directionalLight.specular", 0.5f, 0.5f, 0.5f);
@@ -276,7 +276,7 @@ void SceneManager::SetupSceneLights()
 	// the primary colored key light. 
 	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
-	m_pShaderManager->setVec3Value("pointLights[0].position", 5.0f, 8.0f, 8.0f);
+	m_pShaderManager->setVec3Value("pointLights[0].position", 5.0f, 8.0f, 8.0f);		// front-right, elevated
 	m_pShaderManager->setFloatValue("pointLights[0].constant", 0.5f);
 	m_pShaderManager->setFloatValue("pointLights[0].linear", 0.09f);
 	m_pShaderManager->setFloatValue("pointLights[0].quadratic", 0.032f);
@@ -290,7 +290,7 @@ void SceneManager::SetupSceneLights()
 	// light 0.
 	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[1].bActive", true);
-	m_pShaderManager->setVec3Value("pointLights[1].position", -4.0f, 6.0f, 7.0f);
+	m_pShaderManager->setVec3Value("pointLights[1].position", -4.0f, 6.0f, 7.0f);		// front-left, elevated
 	m_pShaderManager->setFloatValue("pointLights[1].constant", 1.0f);
 	m_pShaderManager->setFloatValue("pointLights[1].linear", 0.09f);
 	m_pShaderManager->setFloatValue("pointLights[1].quadratic", 0.032f);
@@ -304,7 +304,7 @@ void SceneManager::SetupSceneLights()
 	// the backs of objects from going completely dark.
 	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("pointLights[2].bActive", true);
-	m_pShaderManager->setVec3Value("pointLights[2].position", 0.0f, 5.0f, -5.0f);
+	m_pShaderManager->setVec3Value("pointLights[2].position", 0.0f, 5.0f, -5.0f);		// centered behind scene
 	m_pShaderManager->setFloatValue("pointLights[2].constant", 1.0f);
 	m_pShaderManager->setFloatValue("pointLights[2].linear", 0.09f);
 	m_pShaderManager->setFloatValue("pointLights[2].quadratic", 0.032f);
@@ -318,14 +318,14 @@ void SceneManager::SetupSceneLights()
 	// aimed mostly downward with a slight forward tilt.
 	// -------------------------------------------------------
 	m_pShaderManager->setBoolValue("spotLight.bActive", true);
-	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 10.0f, 1.5f);    // directly above scene center
-	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, -0.05f);   // mostly down, slight forward tilt
-	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(22.0f)));    // inner cone
+	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 10.0f, 1.5f);				 // directly above scene center
+	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, -0.05f);				 // mostly down, slight forward tilt
+	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(22.0f)));		 // inner cone
 	m_pShaderManager->setFloatValue("spotLight.outerCutOff", glm::cos(glm::radians(40.0f))); // soft falloff edge
 	m_pShaderManager->setFloatValue("spotLight.constant", 0.1f);
 	m_pShaderManager->setFloatValue("spotLight.linear", 0.045f);
 	m_pShaderManager->setFloatValue("spotLight.quadratic", 0.0075f);
-	m_pShaderManager->setVec3Value("spotLight.ambient", 0.3f, 0.3f, 0.3f); // greyish ambient
+	m_pShaderManager->setVec3Value("spotLight.ambient", 0.3f, 0.3f, 0.3f);
 	m_pShaderManager->setVec3Value("spotLight.diffuse", 0.5f, 0.5f, 0.5f);
 	m_pShaderManager->setVec3Value("spotLight.specular", 0.5f, 0.5f, 0.5f);
 
