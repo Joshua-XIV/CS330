@@ -181,6 +181,16 @@ bool InitializeGLEW()
 	// Displays a successful OpenGL initialization message
 	std::cout << "INFO: OpenGL Successfully Initialized\n";
 	std::cout << "INFO: OpenGL Version: " << glGetString(GL_VERSION) << "\n" << std::endl;
+	// Display camera controls in the console for reference
+	std::cout << "Camera Controls:" << std::endl;
+	std::cout << "  W / S       - Move forward / backward" << std::endl;
+	std::cout << "  A / D       - Pan left / right" << std::endl;
+	std::cout << "  Q / E       - Move up / down" << std::endl;
+	std::cout << "  Mouse       - Look around" << std::endl;
+	std::cout << "  Scroll      - Adjust movement speed" << std::endl;
+	std::cout << "  1 / 2 / 3   - Orthographic views (front / side / top)" << std::endl;
+	std::cout << "  4           - Perspective view" << std::endl;
+	std::cout << "  ESC         - Exit" << std::endl;
 
 	return(true);
 }
