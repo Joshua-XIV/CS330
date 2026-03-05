@@ -599,5 +599,38 @@ void SceneManager::RenderScene()
 
 	// draw the filled cone shape
 	m_basicMeshes->DrawConeMesh();
+
+	/****************************************************************/
+	/*** Set needed transformations before drawing the basic mesh.  ***/
+	/*** This same ordering of code should be used for transforming ***/
+	/*** and drawing all the basic 3D shapes.						***/
+	/******************************************************************/
+	// set the XYZ scale for the mesh
+	scaleXYZ = glm::vec3(1.7f, 1.5f, 1.5f);
+
+	// set the XYZ rotation for the mesh - no rotation needed
+	XrotationDegrees = 0.0f;
+	YrotationDegrees = 40.0f; // match the rotation of the box below it
+	ZrotationDegrees = 8.0f;  // match the tilt of the box below it
+
+	// set the XYZ position for the mesh - placed directly on top of the middle long box
+	positionXYZ = glm::vec3(0.2f, 3.55f, 2.0f);
+
+	// set the transformations into memory to be used on the drawn meshes
+	SetTransformations(
+		scaleXYZ,
+		XrotationDegrees,
+		YrotationDegrees,
+		ZrotationDegrees,
+		positionXYZ);
+
+	// apply brick texture to all faces of the pyramid, including the base
+	SetShaderTexture("brick");
+
+	// scale UV to make brick pattern visible and proportional on each face
+	SetTextureUVScale(1.0f, 1.0f);
+
+	// draw the 4-sided pyramid mesh
+	m_basicMeshes->DrawPyramid4Mesh();
 	/****************************************************************/
 }

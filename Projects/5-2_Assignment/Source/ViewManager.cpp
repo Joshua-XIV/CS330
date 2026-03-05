@@ -149,8 +149,18 @@ void ViewManager::Mouse_Position_Callback(GLFWwindow* window, double xMousePos, 
 /***********************************************************
  *  ProcessKeyboardEvents()
  *
- *  This method is called to process any keyboard events
- *  that may be waiting in the event queue.
+ *  This method is called each frame to process any keyboard
+ *  events waiting in the event queue. Handles camera movement,
+ *  looking direction, and switching between projection modes.
+ *
+ *  Controls:
+ *    W/S        - move camera forward/backward
+ *    A/D        - pan camera left/right
+ *    Q/E        - move camera up/down
+ *    Arrow Keys - look left/right/up/down
+ *    1/2/3      - orthographic views (front/side/top)
+ *    4          - perspective view
+ *    ESC        - close the window
  ***********************************************************/
 void ViewManager::ProcessKeyboardEvents()
 {
@@ -159,14 +169,12 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		glfwSetWindowShouldClose(m_pWindow, true);
 	}
-
 	// if the camera object is null, then exit this method
 	if (NULL == g_pCamera)
 	{
 		return;
 	}
-
-	// process camera zooming in and out
+	// W/S - move the camera forward and backward along its front vector
 	if (glfwGetKey(m_pWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(FORWARD, gDeltaTime);
@@ -175,8 +183,7 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessKeyboard(BACKWARD, gDeltaTime);
 	}
-
-	// process camera panning left and right
+	// A/D - pan the camera left and right along its right vector
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(LEFT, gDeltaTime);
@@ -185,8 +192,7 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessKeyboard(RIGHT, gDeltaTime);
 	}
-
-	// process camera movement up and down
+	// Q/E - move the camera vertically up and down
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessKeyboard(UP, gDeltaTime);
@@ -195,8 +201,7 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessKeyboard(DOWN, gDeltaTime);
 	}
-
-	// process camera looking left and right
+	// Arrow Left/Right - rotate the camera's yaw left and right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(-50.0f, 0.0f);
@@ -205,8 +210,7 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessMouseMovement(50.0f, 0.0f);
 	}
-
-	// process camera looking up and down
+	// Arrow Up/Down - rotate the camera's pitch up and down
 	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		g_pCamera->ProcessMouseMovement(0.0f, 50.0f);
@@ -215,44 +219,34 @@ void ViewManager::ProcessKeyboardEvents()
 	{
 		g_pCamera->ProcessMouseMovement(0.0f, -50.0f);
 	}
-
-	// change between different projection views
+	// 1 - switch to orthographic projection from the front
 	if (glfwGetKey(m_pWindow, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a front orthographic view
 		g_pCamera->Position = glm::vec3(0.0f, 4.0f, 10.0f);
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(0.0f, 0.0f, -1.0f);
 	}
+	// 2 - switch to orthographic projection from the side
 	if (glfwGetKey(m_pWindow, GLFW_KEY_2) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a side orthographic view
 		g_pCamera->Position = glm::vec3(10.0f, 4.0f, 0.0f);
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(-1.0f, 0.0f, 0.0f);
 	}
+	// 3 - switch to orthographic projection from the top
 	if (glfwGetKey(m_pWindow, GLFW_KEY_3) == GLFW_PRESS)
 	{
-		// change to a multi-view orthographic projection
 		bOrthographicProjection = true;
-
-		// change the camera settings to show a top orthographic view
 		g_pCamera->Position = glm::vec3(0.0f, 7.0f, 0.0f);
 		g_pCamera->Up = glm::vec3(-1.0f, 0.0f, 0.0f);
 		g_pCamera->Front = glm::vec3(0.0f, -1.0f, 0.0f);
 	}
+	// 4 - switch back to standard perspective projection
 	if (glfwGetKey(m_pWindow, GLFW_KEY_4) == GLFW_PRESS)
 	{
-		// change to perspective projection
 		bOrthographicProjection = false;
-
-		// change the camera settings to show a perspective view
 		g_pCamera->Position = glm::vec3(0.0f, 5.5f, 8.0f);
 		g_pCamera->Front = glm::vec3(0.0f, -0.5f, -2.0f);
 		g_pCamera->Up = glm::vec3(0.0f, 1.0f, 0.0f);
