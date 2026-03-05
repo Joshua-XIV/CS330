@@ -85,6 +85,19 @@ int main(int argc, char* argv[])
 	g_SceneManager = new SceneManager(g_ShaderManager);
 	g_SceneManager->PrepareScene();
 
+	// Display camera controls to the console on launch
+	std::cout << "Camera Controls:\n";
+	std::cout << "  W/S          - move forward/backward\n";
+	std::cout << "  A/D          - pan left/right\n";
+	std::cout << "  Q/E          - move up/down\n";
+	std::cout << "  Mouse        - look around\n";
+	std::cout << "  Arrow Keys   - look left/right/up/down\n";
+	std::cout << "  1            - orthographic front view\n";
+	std::cout << "  2            - orthographic side view\n";
+	std::cout << "  3            - orthographic top view\n";
+	std::cout << "  4            - perspective view\n";
+	std::cout << "  ESC          - close window\n" << std::endl;
+
 	// loop will keep running until the application is closed 
 	// or until an error has occurred
 	while (!glfwWindowShouldClose(g_Window))
