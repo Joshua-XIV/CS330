@@ -474,13 +474,14 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.6f, 0.6f, 0.6f);
 	m_pShaderManager->setVec3Value("directionalLight.specular", 0.4f, 0.4f, 0.4f);
 
-	// point light - above and slightly in front of the scene
+	// point light - positioned above and in front of the scene for direct illumination
 	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[0].position", 0.0f, 10.0f, 5.0f);
 	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
 	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
 	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
 
+	// spotlight - centered directly above the table, wide cone to evenly light all objects
 	m_pShaderManager->setBoolValue("spotLight.bActive", true);
 	m_pShaderManager->setVec3Value("spotLight.position", 0.0f, 9.0f, 0.0f);
 	m_pShaderManager->setVec3Value("spotLight.direction", 0.0f, -1.0f, 0.0f);
@@ -490,6 +491,7 @@ void SceneManager::SetupSceneLights()
 	m_pShaderManager->setFloatValue("spotLight.constant", 1.0f);
 	m_pShaderManager->setFloatValue("spotLight.linear", 0.09f);
 	m_pShaderManager->setFloatValue("spotLight.quadratic", 0.032f);
+	// wide cutoff angles keep the full table surface evenly lit
 	m_pShaderManager->setFloatValue("spotLight.cutOff", glm::cos(glm::radians(60.f)));
 	m_pShaderManager->setFloatValue("spotLight.outerCutOff", glm::cos(glm::radians(120.0f)));
 }
