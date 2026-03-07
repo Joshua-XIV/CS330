@@ -449,7 +449,7 @@ void SceneManager::LoadSceneTextures()
 
 	//texture slot 13
 	bReturn = CreateGLTexture(
-		"textire/branch.jpg",
+		"textures/branch.jpg",
 		"branch"
 	);
 
