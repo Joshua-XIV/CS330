@@ -447,6 +447,7 @@ void SceneManager::LoadSceneTextures()
 		"raw_cotton"
 	);
 
+	//texture slot 13
 	bReturn = CreateGLTexture(
 		"textire/branch.jpg",
 		"branch"
