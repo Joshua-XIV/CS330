@@ -92,13 +92,16 @@ void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float
 }
 
 /***********************************************************
- *  RenderBranch()
+ *  RenderBranchWithBerry()
  *
- *  Draws a single dark branch cylinder angled outward from
- *  the vase. xRotation and yRotation control the tilt and
- *  direction of the branch. xPosition/yPosition/zPosition
- *  offset the branch base from the vase top. yScale controls
- *  the length of the branch.
+ *  Draws a single branch cylinder angled outward from the
+ *  vase with a cotton berry sphere placed exactly at the tip.
+ *  The tip position is derived from the branch rotation matrix
+ *  so the berry always lands correctly regardless of angle.
+ *
+ *  xRotation/yRotation control the tilt and direction.
+ *  xPosition/yPosition/zPosition offset the branch base.
+ *  yScale controls the length of the branch.
  ***********************************************************/
 void Centerpiece::RenderBranch(glm::vec3 position, float scale, glm::mat4 rotation, float xRotation, float yRotation,
     float xPosition, float yPosition, float zPosition,
