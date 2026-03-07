@@ -482,15 +482,15 @@ void SceneManager::SetupSceneLights()
 	// directional light - simulates light coming from above
 	m_pShaderManager->setBoolValue("directionalLight.bActive", true);
 	m_pShaderManager->setVec3Value("directionalLight.direction", -0.2f, -1.0f, -0.3f);
-	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.15f, 0.15f, 0.15f);
-	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.6f, 0.6f, 0.6f);
+	m_pShaderManager->setVec3Value("directionalLight.ambient", 0.1f, 0.1f, 0.3f);
+	m_pShaderManager->setVec3Value("directionalLight.diffuse", 0.4f, 0.5f, 0.9f);
 	m_pShaderManager->setVec3Value("directionalLight.specular", 0.4f, 0.4f, 0.4f);
 
 	// point light - positioned above and in front of the scene for direct illumination
 	m_pShaderManager->setBoolValue("pointLights[0].bActive", true);
 	m_pShaderManager->setVec3Value("pointLights[0].position", 0.0f, 10.0f, 5.0f);
 	m_pShaderManager->setVec3Value("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+	m_pShaderManager->setVec3Value("pointLights[0].diffuse", 1.0f, 0.95f, 0.8f);
 	m_pShaderManager->setVec3Value("pointLights[0].specular", 0.5f, 0.5f, 0.5f);
 
 	// spotlight - centered directly above the table, wide cone to evenly light all objects
