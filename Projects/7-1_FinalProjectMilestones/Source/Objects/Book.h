@@ -30,9 +30,9 @@ public:
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
 
-    void SetCoverTexture(int coverTextureSlot) { m_coverTextureSlot = coverTextureSlot; };
-    void SetPageTexture(int pageTextureSlot) { m_pageTextureSlot = pageTextureSlot; };
-    void SetUVScale(float u, float v) { m_uvScale = glm::vec2(u, v); };
+    void SetCoverTexture(int coverTextureSlot) { m_coverTextureSlot = coverTextureSlot; }
+    void SetPageTexture(int pageTextureSlot) { m_pageTextureSlot = pageTextureSlot; }
+    void SetUVScale(float u, float v) { m_uvScale = glm::vec2(u, v); }
 
 private:
     int m_coverTextureSlot = 0;

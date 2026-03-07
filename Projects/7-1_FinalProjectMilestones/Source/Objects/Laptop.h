@@ -29,9 +29,9 @@ public:
 		float yRotation = 0.0f,
 		float zRotation = 0.0f) override;
 
-	void SetLaptopFrameTexture(int laptopFrameTexture) { m_laptopFrameTexture = laptopFrameTexture; };
+	void SetLaptopFrameTexture(int laptopFrameTexture) { m_laptopFrameTexture = laptopFrameTexture; }
 
-	void SetKeyTexture(int keyTexture) { m_keyTexture = keyTexture; };
+	void SetKeyTexture(int keyTexture) { m_keyTexture = keyTexture; }
 
 private:
 	int m_laptopFrameTexture = 0;

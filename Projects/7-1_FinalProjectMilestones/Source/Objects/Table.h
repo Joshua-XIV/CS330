@@ -28,9 +28,9 @@ public:
 		float yRotation = 0.0f,
 		float zRotation = 0.0f) override;
 
-	void SetWoodTexture(int woodLegTexture) { m_woodLegTexture = woodLegTexture; };
+	void SetWoodTexture(int woodLegTexture) { m_woodLegTexture = woodLegTexture; }
 
-	void SetTableTopTexture(int tableTopTexture) { m_tableTopTexture = tableTopTexture;};
+	void SetTableTopTexture(int tableTopTexture) { m_tableTopTexture = tableTopTexture;}
 
 private:
 	int m_woodLegTexture = 0;

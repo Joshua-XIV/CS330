@@ -30,7 +30,7 @@ public:
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
 
-    void SetCoasterTexture(int coasterTexture) { m_coasterTexture = coasterTexture; };
+    void SetCoasterTexture(int coasterTexture) { m_coasterTexture = coasterTexture; }
 
 private:
     int m_coasterTexture = 0;
