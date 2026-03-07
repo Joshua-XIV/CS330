@@ -27,7 +27,7 @@ public:
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
 
-    void setBranchTexture(int branchTexture) { m_branchTexture = branchTexture; }
+    void SetBranchTexture(int branchTexture) { m_branchTexture = branchTexture; }
 
     void SetCottonTexture(int cottonTexture) { m_cottonTexture = cottonTexture; }
 
@@ -45,8 +45,12 @@ private:
         float xPosition, float yPosition, float zPosition,
         float yScale);
 
-    // Draws a single white berry sphere at the tip of a branch.
-    // xPosition/yPosition/zPosition offset the berry from the vase top.
+    // Draws a branch cylinder angled outward from the vase with a berry sphere
+    // placed exactly at the tip. The tip position is derived from the branch
+    // rotation matrix so the berry always lands correctly regardless of angle.
+    // xRotation/yRotation control the tilt and direction of the branch.
+    // xPosition/yPosition/zPosition offset the branch base from the vase top.
+    // yScale controls the length of the branch.
     void RenderBranchWithBerry(glm::vec3 position, float scale, glm::mat4 rotation,
         float xRotation, float yRotation,
         float xPosition, float yPosition, float zPosition,

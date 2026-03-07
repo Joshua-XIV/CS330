@@ -115,6 +115,7 @@ void Centerpiece::RenderBranch(glm::vec3 position, float scale, glm::mat4 rotati
     glm::vec3 branchOffset = ScaledOffset(rotation, scale, xPosition, yPosition, zPosition);
     SetTransformations(glm::vec3(0.03f * scale, yScale * scale, 0.03f * scale),
         branchRotation, position + branchOffset);
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(3.0f, 1.0f));
     m_basicMeshes->DrawCylinderMesh(true, true, true);
 }
 
@@ -142,6 +143,7 @@ void Centerpiece::RenderBranchWithBerry(glm::vec3 position, float scale, glm::ma
     m_pShaderManager->setSampler2DValue("objectTexture", m_branchTexture);
     SetTransformations(glm::vec3(0.03f * scale, yScale * scale, 0.03f * scale),
         branchRotation, position + branchOffset);
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(3.0f, 1.0f));
     m_basicMeshes->DrawCylinderMesh(true, true, true);
 
     // --- berry at tip --- offset along the branch direction by yScale
@@ -151,5 +153,6 @@ void Centerpiece::RenderBranchWithBerry(glm::vec3 position, float scale, glm::ma
     m_pShaderManager->setSampler2DValue("objectTexture", m_cottonTexture);
     SetTransformations(glm::vec3(0.07f * scale, 0.07f * scale, 0.07f * scale),
         rotation, position + branchOffset + tipOffset);
+    m_pShaderManager->setVec2Value("UVscale", glm::vec2(1.0f, 1.0f));
     m_basicMeshes->DrawSphereMesh();
 }
