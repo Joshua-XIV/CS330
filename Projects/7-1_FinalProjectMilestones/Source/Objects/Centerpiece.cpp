@@ -7,8 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Centerpiece::Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes, int cottonTexture) 
-    : SceneObject(shaderManager, meshes), m_cottonTexture(cottonTexture){}
+Centerpiece::Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes, int branchTexture, int cottonTexture) 
+    : SceneObject(shaderManager, meshes), m_branchTexture(branchTexture), m_cottonTexture(cottonTexture){}
 
 /***********************************************************
  *  Render()
@@ -61,6 +61,7 @@ void Centerpiece::Render(glm::vec3 position, float scale, float xRotation, float
     float BRANCH_Y_HEIGHT = 1.40f;
     float STEM_LENGTH = 0.6f;
     float STEM_TIP_Y = BRANCH_Y_HEIGHT + STEM_LENGTH;
+    m_pShaderManager->setIntValue("bUseTexture", true);
 
     // --- center main stem --- straight up
     RenderBranch(position, scale, rotation, 0.0f, 0.0f, 0.0f, BRANCH_Y_HEIGHT, 0.0f, STEM_LENGTH);
@@ -103,9 +104,10 @@ void Centerpiece::RenderBranch(glm::vec3 position, float scale, glm::mat4 rotati
     float xPosition, float yPosition, float zPosition,
     float yScale)
 {
+
     SetShaderMaterial(MAT_WOOD);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.12f, 0.08f, 0.05f, 1.0f));
-
+    m_pShaderManager->setSampler2DValue("objectTexture", m_branchTexture);
     glm::mat4 yaw = glm::rotate(glm::radians(yRotation), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 tilt = glm::rotate(glm::radians(xRotation), glm::vec3(1.0f, 0.0f, 0.0f));
     glm::mat4 branchRotation = rotation * yaw * tilt;
@@ -137,6 +139,7 @@ void Centerpiece::RenderBranchWithBerry(glm::vec3 position, float scale, glm::ma
     // --- branch cylinder ---
     SetShaderMaterial(MAT_WOOD);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.12f, 0.08f, 0.05f, 1.0f));
+    m_pShaderManager->setSampler2DValue("objectTexture", m_branchTexture);
     SetTransformations(glm::vec3(0.03f * scale, yScale * scale, 0.03f * scale),
         branchRotation, position + branchOffset);
     m_basicMeshes->DrawCylinderMesh(true, true, true);
@@ -145,6 +148,7 @@ void Centerpiece::RenderBranchWithBerry(glm::vec3 position, float scale, glm::ma
     glm::vec3 tipOffset = glm::vec3(branchRotation * glm::vec4(0.0f, yScale * scale, 0.0f, 0.0f));
     SetShaderMaterial(MAT_CRYSTAL_BODY);
     m_pShaderManager->setVec4Value("objectColor", glm::vec4(0.92f, 0.90f, 0.88f, 1.0f));
+    m_pShaderManager->setSampler2DValue("objectTexture", m_cottonTexture);
     SetTransformations(glm::vec3(0.07f * scale, 0.07f * scale, 0.07f * scale),
         rotation, position + branchOffset + tipOffset);
     m_basicMeshes->DrawSphereMesh();
