@@ -516,6 +516,7 @@ void SceneManager::PrepareScene()
 	m_basicMeshes->LoadTorusMesh();
 	m_basicMeshes->LoadBoxMesh();
 	m_basicMeshes->LoadPrismMesh();
+	m_basicMeshes->LoadSphereMesh();
 	m_mug = new Mug(m_pShaderManager, m_basicMeshes);
 	m_coaster = new Coaster(m_pShaderManager, m_basicMeshes, FindTextureSlot("coaster"));
 	m_table = new Table(m_pShaderManager, m_basicMeshes, FindTextureSlot("table_leg"), FindTextureSlot("table"));
@@ -655,6 +656,7 @@ void SceneManager::RenderCarpet()
 
 	// apply the carpet texture to the floor surface
 	SetShaderTexture("carpet");
+
 	// tile the texture 1.5x in both directions so the carpet fiber pattern
 	// repeats naturally rather than one image being stretched across the surface
 	SetTextureUVScale(1.5f, 1.5f);
