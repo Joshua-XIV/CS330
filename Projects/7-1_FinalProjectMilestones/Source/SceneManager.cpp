@@ -441,6 +441,17 @@ void SceneManager::LoadSceneTextures()
 		"black_plastic"
 	);
 
+	//texture slot 12
+	bReturn = CreateGLTexture(
+		"textures/raw_cotton.jpg",
+		"raw_cotton"
+	);
+
+	bReturn = CreateGLTexture(
+		"textire/branch.jpg",
+		"branch"
+	);
+
 	// after the texture image data is loaded into memory, the
 	// loaded textures need to be bound to texture slots - there
 	// are a total of 16 available slots for scene textures
@@ -522,7 +533,7 @@ void SceneManager::PrepareScene()
 	m_table = new Table(m_pShaderManager, m_basicMeshes, FindTextureSlot("table_leg"), FindTextureSlot("table"));
 	m_book = new Book(m_pShaderManager, m_basicMeshes);
 	m_laptop = new Laptop(m_pShaderManager, m_basicMeshes, FindTextureSlot("steel"), FindTextureSlot("black_plastic"));
-	m_centerPiece = new Centerpiece(m_pShaderManager, m_basicMeshes);
+	m_centerPiece = new Centerpiece(m_pShaderManager, m_basicMeshes, FindTextureSlot("branch"), FindTextureSlot("raw_cotton"));
 }
 
 /***********************************************************
