@@ -26,4 +26,22 @@ public:
         float xRotation = 0.0f,
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
+
+private:
+    // Draws a single dark branch cylinder angled outward from the vase.
+    // xRotation/yRotation control the tilt and direction of the branch.
+    // xPosition/yPosition/zPosition offset the branch base from the vase top.
+    // yScale controls the length of the branch.
+    void RenderBranch(
+        glm::vec3 position, float scale, glm::mat4 rotation,
+        float xRotation, float yRotation,
+        float xPosition, float yPosition, float zPosition,
+        float yScale);
+
+    // Draws a single white berry sphere at the tip of a branch.
+    // xPosition/yPosition/zPosition offset the berry from the vase top.
+    void RenderBranchWithBerry(glm::vec3 position, float scale, glm::mat4 rotation,
+        float xRotation, float yRotation,
+        float xPosition, float yPosition, float zPosition,
+        float yScale);
 };
