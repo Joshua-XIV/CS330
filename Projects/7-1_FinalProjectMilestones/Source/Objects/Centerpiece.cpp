@@ -7,7 +7,8 @@
  *  Constructor - passes shader manager and meshes up to
  *  the SceneObject base class.
  ***********************************************************/
-Centerpiece::Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes) : SceneObject(shaderManager, meshes) {}
+Centerpiece::Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes, int cottonTexture) 
+    : SceneObject(shaderManager, meshes), m_cottonTexture(cottonTexture){}
 
 /***********************************************************
  *  Render()

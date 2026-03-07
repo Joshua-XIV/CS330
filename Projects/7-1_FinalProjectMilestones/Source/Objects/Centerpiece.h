@@ -10,7 +10,7 @@
  ***********************************************************/
 class Centerpiece : public SceneObject {
 public:
-    Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes);
+    Centerpiece(ShaderManager* shaderManager, ShapeMeshes* meshes, int branchTexture = 0, int cottonTexture = 0);
 
     // Draws the center piece at the given world position.
     // All parts are positioned relative to the given position.
@@ -27,7 +27,14 @@ public:
         float yRotation = 0.0f,
         float zRotation = 0.0f) override;
 
+    void setBranchTexture(int branchTexture) { m_branchTexture = branchTexture; }
+
+    void SetCottonTexture(int cottonTexture) { m_cottonTexture = cottonTexture; }
+
 private:
+    int m_branchTexture = 0;
+    int m_cottonTexture = 0;
+
     // Draws a single dark branch cylinder angled outward from the vase.
     // xRotation/yRotation control the tilt and direction of the branch.
     // xPosition/yPosition/zPosition offset the branch base from the vase top.
