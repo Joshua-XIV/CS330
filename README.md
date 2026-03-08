@@ -21,7 +21,7 @@ a 3D scene with a virtual camera.
 
 **Lighting** - Adding light sources to a scene using the Phong shading model.
 
-**2D Collision (WIP) ** - Implementing collision detection in a 2D environment.
+**2D Collision (WIP)** - Implementing collision detection in a 2D environment.
 
 ## Final Project Milestones
 
