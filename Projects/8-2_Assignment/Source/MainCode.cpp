@@ -600,6 +600,6 @@ void processInput(GLFWwindow* window)
     prevSpaceState = currSpaceState;
 
     // Paddle controls
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) paddle.MoveLeft();
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) paddle.MoveRight();
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) paddle.MoveLeft();
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) paddle.MoveRight();
 }
