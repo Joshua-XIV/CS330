@@ -510,6 +510,8 @@ int main(void)
     // Build the brick layout once at startup
     vector<Brick> bricks = BuildBrickLayout();
 
+    cout << "Controls: SPACE = spawn ball | LEFT/RIGHT or A/D = move paddle | ESC = quit" << endl;
+
     while (!glfwWindowShouldClose(window))
     {
         // Setup viewport
